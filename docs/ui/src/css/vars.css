@@ -231,7 +231,16 @@
   --abstract-background: var(--surface-2);
   --abstract-font-color: var(--text);
   --abstract-border-color: var(--border);
+  /* Figma 316:334286 block-note / block-warning: a saturated ground with a
+     1px outline. The frame sets the body copy on them in #6E727B, which is
+     1.19:1 on the blue and 3.40:1 on the gold -- unreadable and failing
+     respectively -- so the text is the ink instead (4.41:1 and 12.59:1). */
   --admonition-background: var(--surface);
+  --admonition-note-background: var(--mr-blue-450);
+  --admonition-note-border: var(--mr-blue-300);
+  --admonition-warning-background: var(--mr-yellow-300);
+  --admonition-warning-border: var(--mr-yellow-300);
+  --admonition-color: var(--text-strong);
   --admonition-label-font-weight: var(--body-font-weight-bold);
   --caption-font-color: var(--text-muted);
   --caption-font-style: italic;

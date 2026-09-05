@@ -516,11 +516,47 @@ html {
   width: 100%;
 }
 
+/* Figma: 20px inset on a saturated ground with a 1px outline. The frame draws
+   two grounds -- blue for note, gold for warning -- so the five AsciiDoc kinds
+   map onto those two rather than getting five inventions. caution and important
+   never occur in these docs; tip occurs on 14 pages. */
 .doc .admonitionblock td.content {
-  padding: 1rem 1rem 0.75rem;
+  padding: calc(20 / var(--rem-base) * 1rem);
   background: var(--admonition-background);
+  border: 1px solid var(--admonition-border, transparent);
+  color: var(--admonition-color);
   width: 100%;
   word-wrap: anywhere;
+}
+
+.doc .admonitionblock.note td.content,
+.doc .admonitionblock.tip td.content {
+  --admonition-background: var(--admonition-note-background);
+  --admonition-border: var(--admonition-note-border);
+}
+
+.doc .admonitionblock.warning td.content,
+.doc .admonitionblock.caution td.content,
+.doc .admonitionblock.important td.content {
+  --admonition-background: var(--admonition-warning-background);
+  --admonition-border: var(--admonition-warning-border);
+}
+
+/* The title sits on the same ground, so it takes the same ink. */
+.doc .admonitionblock td.content > .title {
+  color: var(--admonition-color);
+  font-weight: var(--body-font-weight-bold);
+}
+
+/* Links and inline code have to clear the saturated ground too. */
+.doc .admonitionblock td.content a {
+  color: var(--admonition-color);
+  text-decoration-thickness: 1px;
+}
+
+.doc .admonitionblock td.content code {
+  background: rgb(0 0 0 / 10%);
+  color: var(--admonition-color);
 }
 
 .doc .admonitionblock td.icon {
