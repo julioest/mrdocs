@@ -40,9 +40,10 @@
 }
 
 /* =====================================================================
- * Design-system tokens — implemented inline (L0 primitives, L1 semantic,
- * L2 component). Canonical spec: docs/shared/design-system.css, kept in sync
- * by hand. Not imported at runtime so the landing page ships as one file.
+ * Design-system tokens. docs/shared/design-system.css is the source and is
+ * loaded ahead of this file (see the <link> in index.html.hbs); the Antora
+ * theme imports the same file. What remains below is only what this page
+ * needs beyond it -- anything shared already defines identically was removed.
  * ===================================================================== */
 
 /* =====================================================================
@@ -50,201 +51,87 @@
  * ===================================================================== */
 :root {
   /* --- Palette: brand blue ------------------------------------------ */
-  --ds-blue-200: #78c8ff; /* dark-theme primary base */
-  --ds-blue-400: #0091ea; /* secondary hover border    */
-  --ds-blue-500: #1095c1; /* light-theme primary       */
-  --ds-blue-600: #067da6; /* primary hover             */
-  --ds-blue-700: #0078c8; /* primary active            */
-  --ds-blue-100: #bcebfb; /* demo / tint               */
-  --ds-blue-300: #93c5fd; /* Figma exact: hero title, primary button fill */
   --ds-blue-350: #3d8bff; /* Figma exact: dark headline, icon box, CTA panel */
   --ds-blue-450: #1e78ff; /* Figma exact: CTA "Read the Docs" button fill */
-  --ds-code-800: #272e3e; /* Figma exact: code panel body               */
 
   /* --- Palette: brand gold (comic CTA ramp) ------------------------- */
-  --ds-gold-400: #ffd700; /* peak / hover              */
-  --ds-gold-500: #e5be33; /* rest / function-name / check accent */
-  --ds-gold-300: #f1d874; /* Figma exact: hero title alt, GitHub button */
   --ds-gold-450: #facc15; /* Figma exact: dark title alt */
-  --ds-gold-700: #c8aa28; /* active / pressed          */
 
   /* --- Palette: accent label (eyebrow pills, card titles) ---------- */
   /* Theme-swapped rather than a ramp: the mockups use magenta on the
      cream/light surfaces and the warmer red on the dark ones. */
-  --ds-pink-500: #ec4899; /* light-theme label (Figma exact) */
-  --ds-red-500: #ff4c4c; /* dark-theme label (Figma exact) */
 
   /* --- Palette: ink & paper (light surfaces) ----------------------- */
-  --ds-black: #000; /* comic borders & hard shadows */
-  --ds-ink-900: #0e0e0e; /* text on gold/blue fills   */
-  --ds-ink-950: #0f172a; /* Figma exact: outlines, dark fills, panel chrome */
-  --ds-white: #fff;
-  --ds-paper: #fef7e1; /* warm cream page background  */
   /* The mockups' page cream. Currently used only as the code panel's plain
      text colour; re-pointing the page background to it is a follow-up. */
-  --ds-paper-50: #fdfaf5;
-  --ds-paper-raised: #fbfbfc; /* cards / dropdowns      */
-  --ds-paper-code: #f9fafb; /* inline / block code bg   */
 
   /* --- Palette: navy (dark surfaces) ------------------------------- */
-  --ds-navy-900: #0e1419; /* logo knockout            */
-  --ds-navy-800: #11191f; /* dark page background     */
-  --ds-navy-700: #141e26; /* dark card                */
-  --ds-navy-600: #18232c; /* dark code / sectioning   */
   --ds-navy-650: #171c26; /* dark doc surface / footer bar */
   --ds-navy-750: #141720; /* dark code body / table header band */
-  --ds-navy-500: #24333e; /* dark divider / range     */
-  --ds-navy-400: #374956; /* dark form border         */
 
   /* --- Typography: families ---------------------------------------- */
-  --ds-font-body: "Special Elite", "Roboto", sans-serif;
-  --ds-font-mono:
-    "Menlo", "Consolas", "Roboto Mono", "Ubuntu Monospace", "Noto Mono",
-    "Oxygen Mono", "Liberation Mono", monospace, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   /* Display face: Bangers, vendored as woff2 in assets/fonts (see @font-face above). */
   /* Fallbacks are heavy/condensed faces, not Special Elite: falling a comic
      display headline through a typewriter face looks broken, and it is what
      showed during the load flash. */
-  --ds-font-display: "Bangers", Impact, Haettenschweiler, "Arial Narrow Bold",
-    "Franklin Gothic Bold", sans-serif;
 
   /* --- Typography: weights ----------------------------------------- */
-  --ds-weight-regular: 400;
-  --ds-weight-medium: 600; /* CTA labels               */
-  --ds-weight-bold: 700; /* headings                 */
-  --ds-weight-display: 800; /* hero headings            */
 
   /* --- Typography: responsive base size ---------------------------- */
-  --ds-font-size: 16px; /* → 20px, see breakpoints below */
 
   /* --- Typography: type scale (desktop peak; see fluid overrides) --- */
-  --ds-text-h1: 3rem;
-  --ds-text-h2: 2.25rem;
-  --ds-text-h3: 1.5rem;
-  --ds-text-h4: 1.25rem;
-  --ds-text-h5: 1.125rem;
-  --ds-text-h6: 1rem;
-  --ds-text-body: 1rem;
-  --ds-text-small: 0.875em;
 
   /* --- Typography: line-heights ------------------------------------ */
-  --ds-leading-tight: 1.125; /* h1                     */
-  --ds-leading-snug: 1.25; /* h2                     */
-  --ds-leading-normal: 1.5; /* body                   */
 
   /* --- Spacing scale (base unit = 1rem) ---------------------------- */
-  --ds-space: 1rem;
-  --ds-space-2xs: 0.25rem;
-  --ds-space-xs: 0.5rem;
-  --ds-space-sm: 0.75rem;
-  --ds-space-md: 1rem;
-  --ds-space-lg: 1.5rem;
-  --ds-space-xl: 2rem;
-  --ds-space-2xl: 3rem;
-  --ds-space-3xl: 4rem;
-  --ds-section-gap: 3rem; /* → 4rem on ≥576px         */
 
   /* --- Radii & borders --------------------------------------------- */
-  --ds-radius: 0.5rem;
-  --ds-radius-pill: 2rem;
-  --ds-border-width: 1px;
-  --ds-border-width-bold: 2px; /* comic outlines         */
-  --ds-outline-width: 3px;
 
   /* --- Shadows: comic signature (hard, no blur) -------------------- */
-  --ds-shadow-comic: 6px 6px 0 var(--ds-black);
-  --ds-shadow-comic-soft: 6px 6px 0 rgba(0, 0, 0, 0.8);
-  --ds-shadow-comic-pressed: 2px 2px 0 var(--ds-black);
-  --ds-shadow-comic-pressed-soft: 2px 2px 0 rgba(0, 0, 0, 0.8);
-  --ds-drop-comic: drop-shadow(7px 10px 0 rgba(0, 0, 0, 0.7));
   /* Soft ambient card elevation (light). */
-  --ds-shadow-card-light:
-    0.0145rem 0.029rem 0.174rem rgba(27, 40, 50, 0.01698),
-    0.0335rem 0.067rem 0.402rem rgba(27, 40, 50, 0.024),
-    0.0625rem 0.125rem 0.75rem rgba(27, 40, 50, 0.03),
-    0.1125rem 0.225rem 1.35rem rgba(27, 40, 50, 0.036),
-    0.2085rem 0.417rem 2.502rem rgba(27, 40, 50, 0.04302),
-    0.5rem 1rem 6rem rgba(27, 40, 50, 0.06),
-    0 0 0 0.0625rem rgba(27, 40, 50, 0.015);
-  --ds-shadow-card-dark:
-    0.0145rem 0.029rem 0.174rem rgba(0, 0, 0, 0.01698),
-    0.0335rem 0.067rem 0.402rem rgba(0, 0, 0, 0.024),
-    0.0625rem 0.125rem 0.75rem rgba(0, 0, 0, 0.03),
-    0.1125rem 0.225rem 1.35rem rgba(0, 0, 0, 0.036),
-    0.2085rem 0.417rem 2.502rem rgba(0, 0, 0, 0.04302),
-    0.5rem 1rem 6rem rgba(0, 0, 0, 0.06),
-    0 0 0 0.0625rem rgba(0, 0, 0, 0.015);
 
   /* --- Motion ------------------------------------------------------- */
-  --ds-transition: 0.2s ease-in-out;
-  --ds-lift: translateY(-2px); /* hover                 */
-  --ds-press: translateY(1px); /* active                */
 
   /* --- Container max-widths ---------------------------------------- */
-  --ds-container-sm: 510px;
-  --ds-container-md: 700px;
-  --ds-container-lg: 920px;
-  --ds-container-xl: 1130px;
 
   /* --- Z-index scale ----------------------------------------------- */
-  --ds-z-nav: 1;
-  --ds-z-toolbar: 2;
-  --ds-z-menu: 3;
-  --ds-z-navbar: 4;
-  --ds-z-switcher: 5;
 }
 
 /* Responsive base font size (drives all rem-based tokens). */
 @media (min-width: 576px) {
   :root {
-    --ds-font-size: 17px;
-    --ds-section-gap: 4rem;
   }
 }
 @media (min-width: 768px) {
   :root {
-    --ds-font-size: 18px;
   }
 }
 @media (min-width: 992px) {
   :root {
-    --ds-font-size: 19px;
   }
 }
 @media (min-width: 1200px) {
   :root {
-    --ds-font-size: 20px;
   }
 }
 
 /* Fluid heading ramp: h1 2rem → 3rem, h2 1.75rem → 2.25rem. */
 :root {
-  --ds-text-h1: 2rem;
-  --ds-text-h2: 1.75rem;
 }
 @media (min-width: 576px) {
   :root {
-    --ds-text-h1: 2.25rem;
-    --ds-text-h2: 1.875rem;
   }
 }
 @media (min-width: 768px) {
   :root {
-    --ds-text-h1: 2.5rem;
-    --ds-text-h2: 2rem;
   }
 }
 @media (min-width: 992px) {
   :root {
-    --ds-text-h1: 2.75rem;
-    --ds-text-h2: 2.125rem;
   }
 }
 @media (min-width: 1200px) {
   :root {
-    --ds-text-h1: 3rem;
-    --ds-text-h2: 2.25rem;
   }
 }
 
@@ -261,62 +148,11 @@
 [data-theme="light"] {
   color-scheme: light;
 
-  --ds-color-bg: var(--ds-paper);
-  --ds-color-surface: var(--ds-paper-raised);
-  --ds-color-surface-sunken: var(--ds-paper-code);
-  --ds-color-surface-accent: var(--ds-blue-100);
-  --ds-color-label: var(--ds-pink-500);
-  --ds-color-halftone: rgba(15, 23, 42, 0.1);
   /* Read from the Figma file 2026-08-20 (Homepage - Light/Dark Theme). */
-  --ds-color-outline: var(--ds-ink-950); /* #0F172A */
-  --ds-color-doc-surface: var(--ds-paper-50); /* #FDFAF5 */
   --ds-color-cta-panel: var(--ds-blue-300);
   --ds-color-footer-bg: var(--ds-white);
-  --ds-color-icon-box: var(--ds-blue-300); /* #93C5FD */
-  --ds-color-icon-ink: var(--ds-ink-950);
-  --ds-color-card-text: #6e727b;
-  --ds-color-title: var(--ds-blue-300); /* #93C5FD */
-  --ds-color-title-alt: var(--ds-gold-300); /* #F1D874 */
-  --ds-color-hero-text: var(--ds-ink-950);
-  --ds-color-code-shell: var(--ds-paper-50);
-  --ds-color-code-chrome: var(--ds-ink-950);
-  --ds-color-code-body: var(--ds-code-800); /* #272E3E */
-  --ds-city-opacity: 0.5;
-  --ds-band-opacity: 0.7;
-
-  --ds-color-text: rgba(0, 0, 0, 0.8);
-  --ds-color-heading: rgba(0, 0, 0, 0.95);
-  --ds-color-muted: rgba(0, 0, 0, 0.5);
-  --ds-color-border: rgba(0, 0, 0, 0.1);
-
-  --ds-color-primary: var(--ds-blue-500);
-  --ds-color-primary-hover: var(--ds-blue-600);
-  --ds-color-primary-active: var(--ds-blue-700);
-  --ds-color-primary-focus: rgba(16, 149, 193, 0.125);
-  --ds-color-on-primary: var(--ds-white);
-
-  --ds-color-accent: var(--ds-gold-500);
-  --ds-color-accent-hover: var(--ds-gold-400);
-  --ds-color-accent-active: var(--ds-gold-700);
-  --ds-color-on-accent: var(--ds-ink-900);
-
-  --ds-color-nav-bg: rgba(255, 255, 255, 0.7);
-  --ds-color-nav-border: rgba(115, 130, 140, 0.2);
-
-  --ds-color-valid: #388e3c;
-  --ds-color-invalid: #c62828;
-  --ds-color-mark-bg: #fff2ca;
-  --ds-color-mark-text: #543a26;
-
-  --ds-shadow-card: var(--ds-shadow-card-light);
 
   /* Code / syntax (light) */
-  --ds-code-bg: hsl(205deg, 20%, 94%);
-  --ds-code-text: var(--ds-color-muted);
-  --ds-code-tag: hsl(330deg, 40%, 50%);
-  --ds-code-property: hsl(185deg, 40%, 40%);
-  --ds-code-value: hsl(40deg, 20%, 50%);
-  --ds-code-comment: hsl(205deg, 14%, 68%);
 }
 
 /* ---- Dark (OS preference, unless explicitly light) ----------------- */
@@ -324,56 +160,15 @@
   :root:not([data-theme="light"]) {
     color-scheme: dark;
 
-    --ds-color-bg: var(--ds-navy-800);
-    --ds-color-surface: var(--ds-navy-700);
-    --ds-color-surface-sunken: var(--ds-navy-600);
-    --ds-color-surface-accent: var(--ds-navy-700);
-    --ds-color-label: var(--ds-red-500);
-    --ds-color-halftone: rgba(255, 255, 255, 0.07);
     /* Dark uses pure black for outlines, not #0F172A. */
-    --ds-color-outline: #000;
     --ds-color-doc-surface: var(--ds-navy-650);
     --ds-color-cta-panel: var(--ds-blue-350);
     --ds-color-footer-bg: var(--ds-navy-650);
     --ds-color-icon-box: var(--ds-blue-350);
-    --ds-color-icon-ink: var(--ds-white);
-    --ds-color-card-text: #a9abb2;
     --ds-color-title: var(--ds-blue-350); /* dark line 1 is a deeper blue than light */
     --ds-color-title-alt: var(--ds-gold-450);
-    --ds-color-hero-text: var(--ds-white);
-    --ds-color-code-shell: #272e3f;
-    --ds-color-code-chrome: #000;
     --ds-color-code-body: var(--ds-navy-750);
-    --ds-city-opacity: 0.3;
-    --ds-band-opacity: 0.3;
 
-    --ds-color-text: rgba(255, 255, 255, 0.9);
-    --ds-color-heading: rgba(255, 255, 255, 0.98);
-    --ds-color-muted: rgba(255, 255, 255, 0.6);
-    --ds-color-border: rgba(255, 255, 255, 0.1);
-
-    --ds-color-primary: rgba(120, 200, 255, 0.9);
-    --ds-color-primary-hover: rgba(140, 210, 255, 0.95);
-    --ds-color-primary-active: var(--ds-blue-200);
-    --ds-color-primary-focus: rgba(120, 200, 255, 0.2);
-    --ds-color-on-primary: rgba(0, 0, 0, 0.9);
-
-    --ds-color-nav-bg: rgba(16, 24, 30, 0.8);
-    --ds-color-nav-border: rgba(115, 130, 140, 0.2);
-
-    --ds-color-valid: rgba(46, 125, 50, 0.5);
-    --ds-color-invalid: rgba(183, 28, 28, 0.5);
-    --ds-color-mark-bg: #d1c284;
-    --ds-color-mark-text: #11191f;
-
-    --ds-shadow-card: var(--ds-shadow-card-dark);
-
-    --ds-code-bg: var(--ds-navy-600);
-    --ds-code-text: var(--ds-color-muted);
-    --ds-code-tag: hsl(330deg, 30%, 50%);
-    --ds-code-property: hsl(185deg, 30%, 50%);
-    --ds-code-value: hsl(40deg, 10%, 50%);
-    --ds-code-comment: #4d606d;
   }
 }
 
@@ -381,55 +176,14 @@
 [data-theme="dark"] {
   color-scheme: dark;
 
-  --ds-color-bg: var(--ds-navy-800);
-  --ds-color-surface: var(--ds-navy-700);
-  --ds-color-surface-sunken: var(--ds-navy-600);
-  --ds-color-surface-accent: var(--ds-navy-700);
-  --ds-color-label: var(--ds-red-500);
-  --ds-color-halftone: rgba(255, 255, 255, 0.07);
-  --ds-color-outline: #000;
   --ds-color-doc-surface: var(--ds-navy-650);
   --ds-color-cta-panel: var(--ds-blue-350);
   --ds-color-footer-bg: var(--ds-navy-650);
   --ds-color-icon-box: var(--ds-blue-350);
-  --ds-color-icon-ink: var(--ds-white);
-  --ds-color-card-text: #a9abb2;
   --ds-color-title: var(--ds-blue-350);
   --ds-color-title-alt: var(--ds-gold-450);
-  --ds-color-hero-text: var(--ds-white);
-  --ds-color-code-shell: #272e3f;
-  --ds-color-code-chrome: #000;
   --ds-color-code-body: var(--ds-navy-750);
-  --ds-city-opacity: 0.3;
-  --ds-band-opacity: 0.3;
 
-  --ds-color-text: rgba(255, 255, 255, 0.9);
-  --ds-color-heading: rgba(255, 255, 255, 0.98);
-  --ds-color-muted: rgba(255, 255, 255, 0.6);
-  --ds-color-border: rgba(255, 255, 255, 0.1);
-
-  --ds-color-primary: rgba(120, 200, 255, 0.9);
-  --ds-color-primary-hover: rgba(140, 210, 255, 0.95);
-  --ds-color-primary-active: var(--ds-blue-200);
-  --ds-color-primary-focus: rgba(120, 200, 255, 0.2);
-  --ds-color-on-primary: rgba(0, 0, 0, 0.9);
-
-  --ds-color-nav-bg: rgba(16, 24, 30, 0.8);
-  --ds-color-nav-border: rgba(115, 130, 140, 0.2);
-
-  --ds-color-valid: rgba(46, 125, 50, 0.5);
-  --ds-color-invalid: rgba(183, 28, 28, 0.5);
-  --ds-color-mark-bg: #d1c284;
-  --ds-color-mark-text: #11191f;
-
-  --ds-shadow-card: var(--ds-shadow-card-dark);
-
-  --ds-code-bg: var(--ds-navy-600);
-  --ds-code-text: var(--ds-color-muted);
-  --ds-code-tag: hsl(330deg, 30%, 50%);
-  --ds-code-property: hsl(185deg, 30%, 50%);
-  --ds-code-value: hsl(40deg, 10%, 50%);
-  --ds-code-comment: #4d606d;
 }
 
 /* =====================================================================
@@ -437,14 +191,10 @@
  * ===================================================================== */
 :root {
   /* ---- Halftone dot field (comic print texture) ------------------- */
-  --ds-halftone-dot: var(--ds-color-halftone);
   /* Measured off the mockups 2026-08-20: the dot grid runs on a 6.75px
      pitch (deltas alternate 6/7 on both axes). The previous 14px was a
      guess made before the design file was readable. */
-  --ds-halftone-dot-size: 1.4px;
-  --ds-halftone-gap: 6.75px;
   /* How far down the section the field stays visible before fading out. */
-  --ds-halftone-extent: 55%;
 
   /* ---- CTA panel decoration (its own artwork, not the field above) --- *
    * Mobile values; the desktop frame regrades both layers at 992. Figma
@@ -507,106 +257,40 @@
    * Dark in BOTH themes per the mockups, so these are deliberately
    * theme-invariant: the themed --hl-* vars would go invisible here in
    * light mode. Syntax colours reuse the brand palette. */
-  --ds-code-panel-bg: var(--ds-color-code-body);
-  --ds-code-panel-chrome: var(--ds-color-code-chrome);
-  --ds-code-panel-border: var(--ds-color-outline);
-  --ds-code-panel-fg: var(--ds-paper-50); /* plain code text; comments use --ds-code-panel-comment */
-  --ds-code-panel-comment: #6e727b;
-  --ds-code-panel-linenum: rgba(255, 255, 255, 0.4);
-  --ds-code-panel-keyword: var(--ds-color-label);
-  --ds-code-panel-fn: var(--ds-blue-300);
-  --ds-code-panel-tab: var(--ds-white);
 
   /* ---- Hero cityscape ---------------------------------------------- *
    * Skyline band anchored to the bottom of the hero. Height is width-
    * relative so the art keeps its 3.07 aspect: on desktop it spans the
    * viewport exactly (100vw / 3.07 = 32.5vw); on mobile the mockup zooms
    * it well past the viewport and crops, hence the much larger 92vw. */
-  --ds-city-height: 92vw;
 
   /* ---- Feature card ----------------------------------------------- *
    * The card's outer surface is the page colour, so it reads as a ring
    * around the tinted inner panel -- the same wrapper pattern Figma uses
    * on the hero buttons. The tint is the one value that does not change
    * between themes. */
-  --ds-color-card-tint: rgba(30, 120, 255, 0.1); /* #1E78FF at 10% */
 
   /* ---- Label pill (row badges, hero eyebrow) — Figma exact -------- */
-  --ds-badge-bg: var(--ds-color-label);
-  --ds-badge-text: var(--ds-white);
-  --ds-badge-border-width: var(--ds-border-width-bold);
   /* Figma specifies #0F172A for the edge, not pure black. */
-  --ds-badge-border-color: var(--ds-color-outline);
-  --ds-badge-shadow: 2px 2px 0 var(--ds-badge-border-color);
-  --ds-badge-radius: 0;
-  --ds-badge-padding: 6px 12px;
-  --ds-badge-font: var(--ds-font-display);
-  --ds-badge-size: 16px;
-  --ds-badge-leading: 16px;
-  --ds-badge-tracking: 0.1em;
 
   /* ---- Comic card (feature grid) ---------------------------------- */
-  --ds-feature-bg: var(--ds-color-surface-accent);
-  --ds-feature-border-width: var(--ds-border-width-bold);
-  --ds-feature-border-color: var(--ds-black);
-  --ds-feature-radius: var(--ds-radius);
-  --ds-feature-shadow: var(--ds-shadow-comic);
-  --ds-feature-padding: var(--ds-space-lg);
-  --ds-feature-title-color: var(--ds-color-label);
   /* Icon sits in its own bordered tile in the mockups. */
-  --ds-feature-icon-size: 2.25rem;
-  --ds-feature-icon-bg: var(--ds-color-surface);
 
   /* ---- Code / reference row panels (comic) ------------------------ */
-  --ds-panel-border-width: var(--ds-border-width-bold);
-  --ds-panel-border-color: var(--ds-black);
-  --ds-panel-radius: var(--ds-radius);
-  --ds-panel-shadow: var(--ds-shadow-comic);
-  --ds-panel-heading: var(--ds-color-accent);
-  --ds-panel-gap: var(--ds-space-lg);
 
   /* ---- Button / CTA (comic) --------------------------------------- */
-  --ds-btn-height: 2.5rem;
-  --ds-btn-padding-x: 1.5em;
-  --ds-btn-weight: var(--ds-weight-medium);
-  --ds-btn-border-width: var(--ds-border-width-bold);
-  --ds-btn-radius: var(--ds-radius);
-  --ds-btn-shadow: var(--ds-shadow-comic);
-  --ds-btn-shadow-pressed: var(--ds-shadow-comic-pressed);
-  --ds-btn-lift: var(--ds-lift);
-  --ds-btn-press: var(--ds-press);
 
   /* Primary CTA = gold */
-  --ds-btn-primary-bg: var(--ds-color-accent);
-  --ds-btn-primary-bg-hover: var(--ds-color-accent-hover);
-  --ds-btn-primary-bg-active: var(--ds-color-accent-active);
-  --ds-btn-primary-fg: var(--ds-color-on-accent);
 
   /* Secondary CTA = blue */
-  --ds-btn-secondary-bg: var(--ds-blue-500);
-  --ds-btn-secondary-bg-hover: var(--ds-blue-600);
-  --ds-btn-secondary-bg-active: var(--ds-blue-700);
-  --ds-btn-secondary-fg: var(--ds-ink-900);
-  --ds-btn-secondary-shadow: var(--ds-shadow-comic-soft);
 
   /* ---- Card -------------------------------------------------------- */
-  --ds-card-bg: var(--ds-color-surface);
-  --ds-card-border: var(--ds-color-border);
-  --ds-card-radius: var(--ds-radius);
-  --ds-card-shadow: var(--ds-shadow-card);
 
   /* ---- Comic decorative box --------------------------------------- */
-  --ds-box-drop: var(--ds-drop-comic);
-  --ds-box-border: var(--ds-border-width-bold) solid var(--ds-black);
 
   /* ---- Navigation bar --------------------------------------------- */
-  --ds-nav-bg: var(--ds-color-nav-bg);
-  --ds-nav-border: var(--ds-color-nav-border);
-  --ds-nav-blur: blur(10px);
 
   /* ---- Code block ------------------------------------------------- */
-  --ds-code-radius: var(--ds-radius);
-  --ds-code-font: var(--ds-font-mono);
 
   /* ---- Hero title (comic "Main Title" — Figma spec) --------------- */
   /* Mobile floor read off the mobile mockup: 60px gives the measured 45px
@@ -614,14 +298,9 @@
   /* px, not rem: Pico scales the root font-size up at wide breakpoints,
      which made the rem ceiling resolve to 120px instead of the intended
      96px. Desktop mockup cap height is 70px -> ~93px font. */
-  --ds-title-size: clamp(62px, 8vw, 96px);
-  --ds-title-leading: 0.9; /* Figma line-height 90% */
   /* Read off the Home mockups 2026-08-19: the two "nearest" approximations
      below were placeholders and are now the exact design values. The hero
      headline alternates line colours -- line 1 blue, the rest gold. */
-  --ds-title-color: var(--ds-color-title);
-  --ds-title-color-alt: var(--ds-color-title-alt);
-  --ds-title-ink: var(--ds-color-outline);
   /* Figma's strokes are strokeAlign: OUTSIDE, so the full width paints
      BEYOND the glyph. -webkit-text-stroke centres its stroke instead, and
      with paint-order: stroke fill the inner half is covered by the fill --
@@ -633,8 +312,6 @@
      text-shadow offsets only the glyph fill -- which a stroke this thick
      hides completely. filter: drop-shadow rasterises the stroke too.
      These are the mobile values; the 992px block carries the desktop set. */
-  --ds-title-outline-width: 6px; /* Figma 3px OUTSIDE */
-  --ds-title-drop: drop-shadow(3px 3px 0 var(--ds-title-ink));
   /* Card titles, symbol names and section headings run at half the weight. */
   --ds-title-outline-width-sm: 3px; /* Figma 1.5px OUTSIDE */
   --ds-title-drop-sm: drop-shadow(1.5px 1.5px 0 var(--ds-title-ink));
@@ -655,8 +332,6 @@
 @media (min-width: 992px) {
   :root {
     /* Figma 4px / 2px OUTSIDE, doubled -- see the note above. */
-    --ds-title-outline-width: 8px;
-    --ds-title-drop: drop-shadow(4px 4px 0 var(--ds-title-ink));
     --ds-title-outline-width-sm: 4px;
     --ds-title-drop-sm: drop-shadow(2px 2px 0 var(--ds-title-ink));
   }
@@ -895,7 +570,6 @@ kbd {
     --icon-time: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(65, 84, 98, 0.999)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3Cpolyline points='12 6 12 12 16 14'%3E%3C/polyline%3E%3C/svg%3E");
     --icon-valid: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(56, 142, 60, 0.999)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E")
 }
-
 
 [data-theme=dark] {
     color-scheme: dark;
@@ -2186,7 +1860,6 @@ nav li > * {
     --spacing: 0
 }
 
-
 nav :where(a,[role=link]):is([aria-current],:hover,:active,:focus) {
     text-decoration: none
 }
@@ -2973,14 +2646,9 @@ input:not([type=submit]):not([type=button]):not([type=reset]):not([type=range]):
     transform: scale(1.25)
 }
 
-
-
-
-
 hgroup {
     text-align: center
 }
-
 
 hgroup:after {
     display: none
@@ -3646,8 +3314,6 @@ footer a:focus {
     list-style: none;
 }
 
-
-
 .nav .nav-section:last-child a[role="menuitem"] {
     /* font-size: 1rem; */
 }
@@ -3867,7 +3533,6 @@ footer a:focus {
     background-size: contain;
 }
 
-
 /***** cutout box rotations *****/
 .box0 {
     position: relative;
@@ -3928,7 +3593,6 @@ footer a:focus {
     background-position: center center;
     transform: rotate(var(--inner-box-rotation)) scale(var(--inner-box-scale));
 }
-
 
 .investigate {
     background-image: url("./assets/investigate.png");
@@ -4188,7 +3852,6 @@ footer a {
     --text-decoration: none;
     transition: transform var(--transition), color var(--transition);
 }
-
 
 /* Mobile groundwork (North #1624 — conference QR-code path). The landing grids
    are already mobile-first; this keeps the embedded reference-doc panels and
