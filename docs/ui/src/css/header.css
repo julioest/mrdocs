@@ -182,10 +182,8 @@ body {
   margin: 0.25rem 0;
 }
 
-/* Figma 316:334286: outlined controls are 38px tall with a 2px outline and a
-   hard 2px 2px shadow in the outline colour. The gold used to be a raw
-   rgb(229, 190, 51) here -- #E5BE33, from the stale --ds-* ramp in tokens.css,
-   not the brand gold the frame draws. */
+/* Figma 316:334286: outlined controls are 38px tall, 2px outline, hard 2px
+   shadow in the outline colour. */
 .navbar .button {
   display: inline-flex;
   align-items: center;

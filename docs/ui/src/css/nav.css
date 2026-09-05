@@ -96,7 +96,7 @@
 
 .nav-menu {
   min-height: 100%;
-  /* Figma: 20px inset, chip 28px down from the top of the column. */
+  /* Figma: 20px inset, chip 28px down. */
   padding: calc(28 / var(--rem-base) * 1rem) calc(20 / var(--rem-base) * 1rem);
   line-height: var(--nav-line-height);
   position: relative;
@@ -127,8 +127,7 @@
   visibility: visible;
 }
 
-/* Figma 316:334286: the component title is a pink chip, 28px tall with a 2px
-   outline, sitting 28px down the sidebar and inset 20px. */
+/* Figma: pink chip, 28px tall, 2px outline, 28px down and 20px in. */
 .nav-menu h3.title {
   background: var(--mr-pink);
   border: 2px solid var(--outline);
@@ -147,8 +146,7 @@
   text-decoration: none;
 }
 
-/* ...and the tree below it sits in its own outlined panel, 230 wide inside
-   the 270 column, with the links inset a further 10. */
+/* The tree sits in its own outlined panel, 230 wide, links inset 10. */
 .nav-menu > .nav-list {
   border: 1px solid var(--outline);
   margin: 0;
@@ -201,7 +199,7 @@
   transform: rotate(90deg);
 }
 
-/* Figma: the current page is a gold 210x32 block with its own 1px outline. */
+/* Current page: gold 210x32 block, 1px outline. */
 .is-current-page > .nav-link,
 .is-current-page > .nav-text {
   background: var(--mr-yellow-300);

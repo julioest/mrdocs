@@ -54,11 +54,8 @@
   font-family: var(--doc-body-font);
 }
 
-/* The flat --heading-font-color that used to be set here is gone: doc.css now
-   gives each level an outlined fill from Figma 316:334286, and this rule
-   imports after it, so it would have painted straight over the fill. Case is
-   still NOT changed anywhere -- reference headings are C++ symbol names, so
-   uppercasing them would mangle them. */
+/* No heading colour here: this imports after doc.css and would paint over its
+   per-level outlined fills. */
 
 .toc.sidebar .toc-menu {
   color: var(--toc-font-color);

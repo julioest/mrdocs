@@ -36,19 +36,10 @@ html {
   }
 }
 
-/* Doc headings are outlined Bangers, per Figma 316:334286: a coloured fill
-   under a hard #0F172A stroke and a hard drop shadow at the stroke's own
-   width. Each level sets the three --doc-heading-* properties below; this
-   rule consumes them.
-   Two things carry over from the landing page (docs/website/styles.css:626).
-   First, Figma's strokes are strokeAlign: OUTSIDE, so the whole width paints
-   beyond the glyph, while -webkit-text-stroke centres its stroke and
-   paint-order hides the inner half under the fill -- so every width here is
-   DOUBLE the Figma number, quoted alongside. Second, the shadow is a filter
-   rather than a text-shadow, because text-shadow offsets only the fill and a
-   stroke this thick would swallow it; drop-shadow rasterises the stroke too.
-   Case is left alone on purpose -- reference headings are C++ symbol names,
-   so the uppercase the landing page applies is NOT carried over here. */
+/* Outlined Bangers per Figma 316:334286; each level sets the --doc-heading-*
+   trio below. Stroke widths are DOUBLE the Figma number (strokeAlign OUTSIDE
+   vs -webkit-text-stroke centring); the shadow is a filter, not text-shadow,
+   which the stroke would hide. Case is NOT uppercased: C++ symbol names. */
 .doc h1,
 .doc h2,
 .doc h3,
@@ -60,18 +51,13 @@ html {
   paint-order: stroke fill;
   filter: var(--doc-heading-drop);
   font-family: var(--ds-font-display);
-  /* The landing page slants every display heading and tracks it out slightly
-     (docs/website/styles.css:5093 .section-title). Bangers ships upright only,
-     so this italic is a synthesized oblique -- deliberate here, matching the
-     landing page, and NOT the same as the CTA-button case fixed in 80933e244,
-     where the oblique was stacked on a face that already had a slant. */
+  /* Synthesized oblique -- Bangers has no italic cut. Deliberate: matches the
+     landing page's display treatment. */
   font-style: italic;
   letter-spacing: 0.6px;
   font-weight: var(--heading-font-weight);
   hyphens: none;
-  /* Landing leading. NOTE: frame 316:334286 specifies 1.2 for documentation
-     headings; 0.9 is the landing page's display leading and wins here because
-     matching that treatment was the explicit ask. */
+  /* Landing leading. The frame says 1.2; 0.9 was the explicit ask. */
   line-height: 0.9;
   margin: 1rem 0 0;
 }
@@ -133,8 +119,7 @@ html {
   padding: 0.5rem 1rem;
 }
 
-/* Figma separates sections with a 2px rule across the full text column and
-   64px of clearance either side. */
+/* Figma: 2px section rule, 64px clearance either side. */
 .doc h2:not(.discrete) {
   border-bottom: 2px solid var(--section-divider-color);
   font-size: calc(42 / var(--rem-base) * 1rem);
@@ -156,9 +141,7 @@ html {
   margin-bottom: 0.5rem;
 }
 
-/* h5 and h6 drop the uppercase + tracking + muted colour they used to carry:
-   the frame draws them as the same outlined Bangers as the rest of the scale,
-   only smaller. */
+/* h5/h6 lose their old uppercase, tracking and muted colour: same scale. */
 .doc h5:not(.discrete) {
   font-size: calc(20 / var(--rem-base) * 1rem);
   font-weight: var(--alt-heading-font-weight);

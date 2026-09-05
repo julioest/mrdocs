@@ -8,7 +8,7 @@
   top: var(--toc-top);
 }
 
-/* Figma 316:334286: same pink chip as the left sidebar's section label. */
+/* Same pink chip as the left sidebar. */
 .toc .toc-menu h3 {
   background: var(--mr-pink);
   border: 2px solid var(--outline);
@@ -22,9 +22,7 @@
   padding: calc(6 / var(--rem-base) * 1rem) calc(10 / var(--rem-base) * 1rem);
 }
 
-/* The sidebar variant used to bottom-align the heading in a 2.5rem box. The
-   chip sizes itself now, so this only keeps it from stretching to the column
-   width. */
+/* The chip sizes itself; this just stops it stretching. */
 .toc.sidebar .toc-menu h3 {
   align-self: flex-start;
 }
@@ -76,7 +74,7 @@
   padding-left: 2rem;
 }
 
-/* Figma: 200x22.7 entries on a 28.7 rhythm, ruled 1.8px gold down the left. */
+/* Figma: 200x22.7 on a 28.7 rhythm, gold left rule. */
 .toc .toc-menu a {
   color: var(--toc-font-color);
   border-left: 2px solid var(--toc-border-color);

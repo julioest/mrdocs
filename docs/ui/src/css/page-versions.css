@@ -4,9 +4,8 @@
   line-height: 1;
 }
 
-/* Figma 316:334286: a 58x22 chip filled --mr-blue-300 with a 2px outline,
-   12px label. The width is left to the content -- version names vary -- so
-   only the height, padding and fill are pinned. */
+/* Figma: 58x22 chip, 2px outline, 12px label. Width is left to the content --
+   version names vary. */
 .page-versions .version-menu-toggle {
   color: var(--text-strong);
   background: var(--mr-blue-300);
