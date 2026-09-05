@@ -1,14 +1,19 @@
+/* Full-bleed strip between the navbar and the two columns. It is a sibling of
+   .body (see partials/body.hbs), not a child of main, because Figma 316:334286
+   runs it edge to edge at y=79 with the sidebars starting beneath it. */
 .toolbar {
   background-color: var(--toolbar-strip-bg);
   border-bottom: 1px solid var(--toolbar-border-color);
   color: var(--toolbar-font-color);
   align-items: center;
   display: flex;
-  font-size: calc(15 / var(--rem-base) * 1rem);
+  /* Figma: breadcrumb text 13px at x=40, version chip ending 40 from the
+     right edge. */
+  font-size: calc(13 / var(--rem-base) * 1rem);
   height: var(--toolbar-height);
   justify-content: flex-start;
+  padding: 0 calc(40 / var(--rem-base) * 1rem);
   position: static;
-  top: var(--navbar-height);
   z-index: var(--z-index-toolbar);
 }
 

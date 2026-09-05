@@ -124,10 +124,29 @@ object[type="image/svg+xml"]:not([width]) {
     }
   }
 
+  /* Figma 316:334286 draws the page scrollbar as a 30px rail (Frame 216) --
+     a 10px black track inset 10px either side, carrying a gold rounded thumb.
+     Styling ::-webkit-scrollbar at all opts Chrome and Safari out of overlay
+     scrollbars, so the 30px is really reserved and the TOC's right edge lands
+     on 1409 as drawn. The inset is a transparent border over a padding-box
+     background, since a scrollbar part cannot be positioned directly. */
   html::-webkit-scrollbar {
+    background-color: transparent;
+    height: var(--doc-rail-width);
+    width: var(--doc-rail-width);
+  }
+
+  html::-webkit-scrollbar-track {
     background-color: var(--scrollbar-track-color);
-    height: 12px;
-    width: 12px;
+    background-clip: padding-box;
+    border: calc(10 / var(--rem-base) * 1rem) solid transparent;
+  }
+
+  html::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb-color);
+    background-clip: padding-box;
+    border: calc(10 / var(--rem-base) * 1rem) solid transparent;
+    border-radius: calc(20 / var(--rem-base) * 1rem);
   }
 
   body ::-webkit-scrollbar {

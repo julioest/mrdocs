@@ -31,6 +31,8 @@ html {
     margin: var(--doc-margin--desktop);
     max-width: var(--doc-max-width--desktop);
     min-width: 0;
+    padding-left: var(--doc-padding-x--desktop);
+    padding-right: var(--doc-padding-x--desktop);
   }
 }
 

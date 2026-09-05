@@ -8,24 +8,29 @@
   top: var(--toc-top);
 }
 
+/* Figma 316:334286: same pink chip as the left sidebar's section label. */
 .toc .toc-menu h3 {
-  color: var(--toc-heading-font-color);
-  font-size: calc(16 / var(--rem-base) * 1rem);
+  background: var(--mr-pink);
+  border: 2px solid var(--outline);
+  box-shadow: var(--outline-shadow);
+  color: var(--mr-white);
+  display: inline-block;
+  font-size: calc(14 / var(--rem-base) * 1rem);
   font-weight: var(--body-font-weight-bold);
-  line-height: 1.3;
-  margin: 0 -0.5px;
-  padding-bottom: 0.25rem;
+  line-height: 1;
+  margin: 0 0 calc(16 / var(--rem-base) * 1rem);
+  padding: calc(6 / var(--rem-base) * 1rem) calc(10 / var(--rem-base) * 1rem);
 }
 
+/* The sidebar variant used to bottom-align the heading in a 2.5rem box. The
+   chip sizes itself now, so this only keeps it from stretching to the column
+   width. */
 .toc.sidebar .toc-menu h3 {
-  display: flex;
-  flex-direction: column;
-  height: 2.5rem;
-  justify-content: flex-end;
+  align-self: flex-start;
 }
 
 .toc .toc-menu ul {
-  font-size: calc(15 / var(--rem-base) * 1rem);
+  font-size: calc(13 / var(--rem-base) * 1rem);
   line-height: var(--toc-line-height);
   list-style: none;
   margin: 0;
@@ -71,11 +76,15 @@
   padding-left: 2rem;
 }
 
+/* Figma: 200x22.7 entries on a 28.7 rhythm, ruled 1.8px gold down the left. */
 .toc .toc-menu a {
-  color: var(--color-white-75);
+  color: var(--toc-font-color);
   border-left: 2px solid var(--toc-border-color);
   display: inline-block;
-  padding: 0.25rem 0 0.25rem 0.5rem;
+  margin-bottom: calc(6 / var(--rem-base) * 1rem);
+  padding:
+    calc(4 / var(--rem-base) * 1rem) 0 calc(4 / var(--rem-base) * 1rem)
+    calc(10 / var(--rem-base) * 1rem);
   text-decoration: none;
 }
 
@@ -89,8 +98,8 @@
 }
 
 .toc .toc-menu a.is-active {
-  border-left-color: var(--color-white);
-  color: var(--doc-font-color);
+  border-left-color: var(--outline);
+  color: var(--text-strong);
 }
 
 .sidebar.toc .toc-menu a:focus {

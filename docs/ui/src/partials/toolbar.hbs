@@ -1,5 +1,8 @@
 <nav class="toolbar">
 {{> breadcrumbs}}
-{{> page-versions}}
+{{!-- Figma 316:334286 puts the version chip hard against the bar's right
+      inset. The frame shows no edit link, so that keeps its slot ahead of
+      the chip rather than displacing it. --}}
 {{> edit-this-page}}
+{{> page-versions}}
 </nav>

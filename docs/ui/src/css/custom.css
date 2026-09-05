@@ -193,7 +193,7 @@ body {
 }
 
 .navbar {
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--navbar-border-color);
 }
 
 /* Monochrome white status icons (comparison tables, demo gallery) ship as

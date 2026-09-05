@@ -26,6 +26,7 @@
   --mr-white: #fff;
   --mr-blue: #3d8bff;
   --mr-blue-300: #93c5fd;
+  --mr-blue-450: #1e78ff; /* Figma exact: theme-toggle fill, note blocks */
   --mr-blue-600: #2563eb;
   --mr-yellow: #facc15;
   --mr-yellow-300: #f1d874;
@@ -54,6 +55,15 @@
   --text-muted: #5b6675;
   --border: #e6e2d8;
   --border-strong: #cdd5df;
+  /* Hard comic outline. The Figma documentation frame (316:334286) draws every
+     chrome edge -- the navbar underline, both sidebar seams, the crumb bar --
+     as a 1px #0F172A rule. That is a different job from --border, which is the
+     soft divider between pieces of content, so it gets its own token rather
+     than darkening --border and dragging every content rule along with it. */
+  --outline: var(--mr-midnight);
+  /* Every outlined control in frame 316:334286 carries the same hard 2px 2px
+     drop shadow in the outline colour -- no blur, no spread. */
+  --outline-shadow: 2px 2px 0 var(--outline);
   --accent: var(--mr-blue-600); /* readable blue on cream */
   --accent-solid: var(--mr-blue);
   --accent-warm: var(--mr-amber-700); /* readable "yellow" on light = amber */
@@ -139,12 +149,14 @@
   --body-background: var(--bg);
   --panel-background: var(--surface);
   --panel-border-color: var(--border);
-  --scrollbar-track-color: var(--surface-2);
-  --scrollbar-thumb-color: var(--border-strong);
-  --scrollbar_hover-thumb-color: var(--slate-400);
+  /* Figma: the rail's track is the outline colour, not a surface tint. */
+  --scrollbar-track-color: var(--outline);
+  --scrollbar-thumb-color: var(--mr-yellow-300);
+  --scrollbar_hover-thumb-color: var(--mr-yellow);
 
   /* navbar */
   --navbar-background: var(--surface);
+  --navbar-border-color: var(--outline);
   --navbar-font-color: var(--text);
   --navbar_hover-background: var(--surface-2);
   --navbar_hover-font-color: var(--accent);
@@ -158,27 +170,27 @@
 
   /* nav (left tree) */
   --nav-background: var(--surface);
-  --nav-border-color: var(--border);
+  --nav-border-color: var(--outline);
   --nav-line-height: 1.35;
   --nav-heading-font-color: var(--text-muted);
   --nav-muted-color: var(--text-muted);
   --nav-panel-divider-color: var(--border);
   --nav-secondary-background: var(--surface-2);
-  /* Left nav column: on light a solid panel surface set off from the cream
-     content; on dark a transparent base so the white overlays below keep the
-     current midnight look. The overlays flip to transparent on light so they
-     don't wash the panel back toward the content colour. */
-  --nav-panel-background: var(--surface-2);
+  /* Left nav column: Figma 316:334286 puts the sidebar on the same cream as
+     the page and separates it with the outline alone, so light no longer
+     tints it. Dark keeps a transparent base so the white overlays below hold
+     the midnight look; the overlays stay transparent on light. */
+  --nav-panel-background: var(--bg);
   --nav-panel-overlay: transparent;
   --nav-explore-overlay: transparent;
 
   /* toolbar */
   --toolbar-background: var(--surface);
-  /* Breadcrumbs strip: on light a solid surface-2 band set off from the cream
-     content (matching the nav column); on dark the white overlay that lifts
-     the midnight page, as before. */
-  --toolbar-strip-bg: var(--surface-2);
-  --toolbar-border-color: var(--border);
+  /* Breadcrumbs strip: cream on light, per Figma -- it runs the full width
+     under the navbar and is separated by its outline, not by a fill. Dark
+     keeps the white overlay that lifts the midnight page, as before. */
+  --toolbar-strip-bg: var(--bg);
+  --toolbar-border-color: var(--outline);
   --toolbar-font-color: var(--text-muted);
   --toolbar-muted-color: var(--text-muted);
   --page-version-menu-background: var(--surface-2);
@@ -208,7 +220,10 @@
   --doc-font-size--desktop: calc(17 / var(--rem-base) * 1rem);
   --doc-line-height: 1.65;
   --doc-margin: 0 auto;
-  --doc-margin--desktop: 0 2rem;
+  /* Figma 316:334286: the content column is flush against the nav seam --
+     the 60px inset is padding on .doc, not margin, so the column's own
+     max-width can carry the 899 the frame draws. */
+  --doc-margin--desktop: 0;
   --heading-font-color: var(--heading-color);
   --heading-font-weight: normal;
   --alt-heading-font-weight: var(--body-font-weight-bold);
@@ -254,7 +269,8 @@
   /* toc */
   --toc-font-color: var(--text-muted);
   --toc-heading-font-color: var(--text-strong);
-  --toc-border-color: var(--border);
+  /* Figma 316:334286 rules each contents entry with a gold left border. */
+  --toc-border-color: var(--mr-yellow-300);
   --toc-line-height: 1.2;
 
   /* footer */
@@ -263,23 +279,33 @@
   --footer-font-color: var(--text-muted);
   --footer-link-font-color: var(--accent);
 
-  /* dimensions and positioning (unchanged) */
-  --navbar-height: calc(63 / var(--rem-base) * 1rem);
+  /* dimensions and positioning -- Figma frame 316:334286 unless noted */
+  --navbar-height: calc(79 / var(--rem-base) * 1rem);
   --toolbar-height: calc(45 / var(--rem-base) * 1rem);
   --drawer-height: var(--toolbar-height);
-  --body-top: var(--navbar-height);
+  /* The crumb bar now spans the full width ABOVE the columns (Figma puts it at
+     y=79, with the sidebars starting at y=124), so it is no longer inside main
+     and no longer comes out of the nav column's height. */
+  --body-top: calc(var(--navbar-height) + var(--toolbar-height));
   --body-min-height: calc(100vh - var(--body-top));
-  --nav-height: calc(var(--body-min-height) - var(--toolbar-height));
+  --nav-height: var(--body-min-height);
   --nav-height--desktop: var(--body-min-height);
   --nav-panel-menu-height: calc(100% - var(--drawer-height));
   --nav-panel-explore-height: calc(50% + var(--drawer-height));
   --nav-width: calc(270 / var(--rem-base) * 1rem);
-  --toc-top: calc(var(--body-top) + var(--toolbar-height));
+  /* The crumb bar scrolls away with the page; the TOC pins under the fixed
+     navbar alone. */
+  --toc-top: var(--navbar-height);
   --toc-height: calc(100vh - var(--toc-top) - 2.5rem);
   --toc-width: calc(162 / var(--rem-base) * 1rem);
-  --toc-width--widescreen: calc(216 / var(--rem-base) * 1rem);
+  --toc-width--widescreen: calc(240 / var(--rem-base) * 1rem);
   --doc-max-width: calc(720 / var(--rem-base) * 1rem);
-  --doc-max-width--desktop: calc(828 / var(--rem-base) * 1rem);
+  /* Figma: an 899px column with 60px of inner padding -> 779px of text.
+     Border-box, so the max-width is the column and the padding comes out of
+     it. The 30px gutter to its right is the scrollbar rail (Frame 216). */
+  --doc-max-width--desktop: calc(899 / var(--rem-base) * 1rem);
+  --doc-padding-x--desktop: calc(60 / var(--rem-base) * 1rem);
+  --doc-rail-width: calc(30 / var(--rem-base) * 1rem);
 
   /* stacking */
   --z-index-nav: var(--ds-z-nav);
@@ -307,6 +333,8 @@
   --text-muted: var(--slate-400);
   --border: rgba(148, 163, 184, 0.18);
   --border-strong: rgba(148, 163, 184, 0.32);
+  /* DERIVED -- see the note in the prefers-color-scheme block below. */
+  --outline: #000;
   --accent: var(--mr-blue);
   --accent-solid: var(--mr-blue);
   --accent-warm: var(--mr-yellow);
@@ -362,6 +390,10 @@
     --text-muted: var(--slate-400);
     --border: rgba(148, 163, 184, 0.18);
     --border-strong: rgba(148, 163, 184, 0.32);
+    /* DERIVED, not specified: frame 316:334286 is light only. Pure black is
+       what the landing page's outline token does on dark, and on the midnight
+       ground it still reads as a seam. Revisit when a dark frame exists. */
+    --outline: #000;
     --accent: var(--mr-blue);
     --accent-solid: var(--mr-blue);
     --accent-warm: var(--mr-yellow);

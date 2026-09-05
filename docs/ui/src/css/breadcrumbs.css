@@ -1,7 +1,8 @@
 .breadcrumbs {
   display: none;
   flex: 1 1;
-  padding: 0 0.5rem 0 0.75rem;
+  /* The 40px inset now lives on .toolbar, which is full-bleed. */
+  padding: 0;
   line-height: var(--nav-line-height);
 }
 
@@ -13,6 +14,11 @@
 
 a + .breadcrumbs {
   padding-left: 0.05rem;
+}
+
+.breadcrumbs,
+.breadcrumbs a {
+  color: var(--text-strong);
 }
 
 .breadcrumbs ul {

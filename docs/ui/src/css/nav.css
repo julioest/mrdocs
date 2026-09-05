@@ -96,7 +96,8 @@
 
 .nav-menu {
   min-height: 100%;
-  padding: 0.5rem 0.75rem;
+  /* Figma: 20px inset, chip 28px down from the top of the column. */
+  padding: calc(28 / var(--rem-base) * 1rem) calc(20 / var(--rem-base) * 1rem);
   line-height: var(--nav-line-height);
   position: relative;
 }
@@ -126,12 +127,32 @@
   visibility: visible;
 }
 
+/* Figma 316:334286: the component title is a pink chip, 28px tall with a 2px
+   outline, sitting 28px down the sidebar and inset 20px. */
 .nav-menu h3.title {
-  color: var(--nav-heading-font-color);
-  font-size: inherit;
+  background: var(--mr-pink);
+  border: 2px solid var(--outline);
+  box-shadow: var(--outline-shadow);
+  color: var(--mr-white);
+  display: inline-block;
+  font-size: calc(14 / var(--rem-base) * 1rem);
   font-weight: var(--body-font-weight-bold);
+  line-height: 1;
+  margin: 0 0 calc(16 / var(--rem-base) * 1rem);
+  padding: calc(6 / var(--rem-base) * 1rem) calc(10 / var(--rem-base) * 1rem);
+}
+
+.nav-menu h3.title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ...and the tree below it sits in its own outlined panel, 230 wide inside
+   the 270 column, with the links inset a further 10. */
+.nav-menu > .nav-list {
+  border: 1px solid var(--outline);
   margin: 0;
-  padding: 0.25em 0 0.125em;
+  padding: calc(10 / var(--rem-base) * 1rem);
 }
 
 .nav-list {
@@ -180,10 +201,15 @@
   transform: rotate(90deg);
 }
 
+/* Figma: the current page is a gold 210x32 block with its own 1px outline. */
 .is-current-page > .nav-link,
 .is-current-page > .nav-text {
+  background: var(--mr-yellow-300);
+  border: 1px solid var(--outline);
+  color: var(--text-strong);
+  display: block;
   font-weight: var(--body-font-weight-bold);
-  color: var(--color-white);
+  padding: calc(6 / var(--rem-base) * 1rem) calc(8 / var(--rem-base) * 1rem);
 }
 
 .nav-panel-explore {
