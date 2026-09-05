@@ -6009,14 +6009,22 @@ header {
     align-items: center;
     justify-content: center;
     height: 38px;
-    padding: 0 var(--ds-btn-padding-x);
+    /* Figma sets the label box, not the padding: mobile 171 wide around a
+       144 label, desktop 205 around 169. --ds-btn-padding-x is 1.5em, which
+       at this font size would push both buttons well past that. A hair under
+       Figma's own 11.5/16 a side, so min-width lands the box on the Figma
+       number instead of the trailing letter-space carrying it 1px over. */
+    padding: 0 11px;
     border: var(--ds-border-width-bold) solid var(--ds-color-outline);
     border-radius: var(--ds-cta-btn-radius);
     box-shadow: var(--ds-cta-btn-shadow);
+    /* .fig "Primary" symbol (316:8): Bangers Regular, 17 mobile / 20 desktop,
+       10% tracking, uppercase. Bangers carries its own slant -- the italic
+       this used to set was a synthetic oblique on top of it. */
     font-family: var(--ds-font-display);
-    font-style: italic;
     font-weight: var(--ds-weight-medium);
-    font-size: 16px;
+    font-size: 17px;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     text-decoration: none;
     white-space: nowrap;
@@ -6200,6 +6208,8 @@ footer {
     .cta-btn {
         height: 48px;
         min-width: 205px;
+        padding-inline: 15px;
+        font-size: 20px;
     }
 
     .cta-btn--read {
