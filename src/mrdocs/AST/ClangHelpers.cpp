@@ -483,6 +483,37 @@ isAnyImplicitSpecialization(clang::Decl const* D)
 }
 
 bool
+isInstantiation(clang::Decl const* D)
+{
+    // The kinds an instantiation written in a context can have: `template`
+    // gives a definition, `extern template` a declaration. An explicit
+    // specialization is a declaration of the user's own and is not one.
+    auto const written = [](clang::TemplateSpecializationKind const TSK)
+    {
+        return TSK == clang::TSK_ExplicitInstantiationDeclaration ||
+               TSK == clang::TSK_ExplicitInstantiationDefinition;
+    };
+    if (auto const* CTSD = dyn_cast_or_null<clang::ClassTemplateSpecializationDecl>(D))
+    {
+        return written(CTSD->getSpecializationKind());
+    }
+    if (auto const* VTSD = dyn_cast_or_null<clang::VarTemplateSpecializationDecl>(D))
+    {
+        return written(VTSD->getSpecializationKind());
+    }
+    if (auto const* FD = dyn_cast_or_null<clang::FunctionDecl>(D))
+    {
+        // A function template's instantiation has TemplateSpecializationInfo.
+        // A member function of an instantiated class has the same
+        // specialization kind but MemberSpecializationInfo instead: it is a
+        // member, not an instantiation written in the context.
+        return FD->getTemplateSpecializationInfo() != nullptr &&
+               written(FD->getTemplateSpecializationKind());
+    }
+    return false;
+}
+
+bool
 isAnySpecialization(clang::Decl const* D)
 {
     if (!D)
@@ -642,9 +673,11 @@ getDocumentation(clang::Decl const* D)
         //      declarator (a `friend class Z;`) or an implicit template
         //      instantiation borrowing its primary's comment.
         //      See tests/golden/fixtures/symbols/record/friend-type.cpp
-        clang::SourceLocation const beginLoc = D->getBeginLoc();
-        clang::SourceLocation const nameLoc = D->getLocation();
         clang::SourceManager const& sm = ctx.getSourceManager();
+        clang::SourceLocation const beginLoc =
+            sm.getExpansionLoc(D->getBeginLoc());
+        clang::SourceLocation const nameLoc =
+            sm.getExpansionLoc(D->getLocation());
 
         bool retry = hasNoCommentSearchLoc(D);
         if (!retry &&
@@ -678,6 +711,30 @@ getDocumentation(clang::Decl const* D)
             if (clang::NamedDecl const* ND = TD->getTemplatedDecl())
             {
                 RC = ctx.getRawCommentNoCache(ND);
+            }
+        }
+    }
+
+    // A nested-namespace-definition, `namespace a::b {`, opens one
+    // NamespaceDecl per component at the same place, so Clang hands the
+    // comment above it to every one of them. The comment describes what
+    // is being opened for the code that follows, the innermost namespace,
+    // not the enclosing ones that merely lead to it. Give it to the outer
+    // components' redeclarations elsewhere if they have their own.
+    // See tests/golden/fixtures/symbols/namespace/nested-namespace-definition-doc.cpp
+    if (RC)
+    {
+        if (auto const* NS = dyn_cast<clang::NamespaceDecl>(D))
+        {
+            for (clang::Decl const* Child : NS->decls())
+            {
+                auto const* Inner = dyn_cast<clang::NamespaceDecl>(Child);
+                if (Inner && Inner->isNested() &&
+                    ctx.getRawCommentNoCache(Inner) == RC)
+                {
+                    return nullptr;
+                }
+                break;
             }
         }
     }

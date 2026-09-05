@@ -459,13 +459,36 @@ traverse(clang::ExportDecl const* D)
     return nullptr;
 }
 
+// Whether a declaration found in a context declares or defines something.
+// Only those are documented. Two kinds found among a context's members do
+// neither:
+//
+// - implicit declarations, which the compiler synthesized and no one wrote
+//   (an IndirectFieldDecl is the exception: it is how the members of an
+//   anonymous struct or union become members of the enclosing class);
+// - instantiations, `extern template class A<int>;` or
+//   `template class A<int>;`. These are uses of the template, not
+//   declarations of anything new. What they name is documented where the
+//   template or its specialization is declared.
+//   See tests/golden/fixtures/templates/ct_extern_instantiation.cpp
+static
+bool
+isDeclarationOrDefinition(clang::Decl const* D)
+{
+    if (isInstantiation(D))
+    {
+        return false;
+    }
+    return !D->isImplicit() || isa<clang::IndirectFieldDecl>(D);
+}
+
 void
 ASTVisitor::
 traverseTransparentContext(clang::DeclContext const* DC)
 {
     for (clang::Decl* Child : DC->decls())
     {
-        if (!Child->isImplicit() || isa<clang::IndirectFieldDecl>(Child))
+        if (isDeclarationOrDefinition(Child))
         {
             ScopeExitRestore s(mode_);
             traverse(Child);
@@ -515,12 +538,11 @@ traverseMembers(InfoTy& I, DeclTy const* DC)
         }
 
         // There are many implicit declarations, especially in the
-        // translation unit declaration, so we preemtively skip them here.
-        auto explicitMembers = std::ranges::views::filter(DC->decls(), [](clang::Decl* D)
-            {
-                return !D->isImplicit() || isa<clang::IndirectFieldDecl>(D);
-            });
-        for (auto* D : explicitMembers)
+        // translation unit declaration, so we preemptively skip them here,
+        // along with instantiations, which declare nothing.
+        auto declared = std::ranges::views::filter(
+            DC->decls(), [](clang::Decl* D) { return isDeclarationOrDefinition(D); });
+        for (auto* D : declared)
         {
             // No matter what happens in the process, we restore the
             // traversal mode to the original mode for the next member
@@ -560,7 +582,9 @@ traverseParent(InfoTy& I, DeclTy const* DC)
         // hasn't been extracted yet
         Symbol* PI = nullptr;
         {
+            bool const written = mode_ == Regular;
             ScopeExitRestore s(mode_, Dependency);
+            ScopeExitRestore w(parentOfWritten_, written);
             if (PI = findOrTraverse(PD); !PI)
             {
                 return;
@@ -1023,13 +1047,22 @@ populate(
     {
         populate(I.Requires, TRC);
     }
-    else if (I.Requires.Written.empty())
+    else
     {
-        MRDOCS_ASSERT(!I.ReturnType.valueless_after_move());
-        // Return type SFINAE constraints
-        if (!I.ReturnType->Constraints.empty())
+        // SFINAE constraints found in the return type and the parameters
+        // become the requires clause. This runs for every redeclaration:
+        // the parameters above are populated again each time (the
+        // out-of-line definition after the in-class declaration), so a
+        // SFINAE parameter that the first pass removed comes back and must
+        // be removed again. The clause text itself is written once, on the
+        // first pass that finds constraints.
+        //
+        // See tests/golden/fixtures/symbols/function/sfinae-out-of-line-definition.cpp
+        bool const writeClause = I.Requires.Written.empty();
+        auto appendConstraints = [&](std::vector<ExprInfo> const& constraints)
         {
-            for (ExprInfo const& constraint: I.ReturnType->Constraints)
+            MRDOCS_CHECK_OR(writeClause);
+            for (ExprInfo const& constraint: constraints)
             {
                 if (!I.Requires.Written.empty())
                 {
@@ -1037,22 +1070,17 @@ populate(
                 }
                 I.Requires.Written += constraint.Written;
             }
-        }
+        };
 
-        // Iterate I.Params to find trailing requires clauses
+        MRDOCS_ASSERT(!I.ReturnType.valueless_after_move());
+        appendConstraints(I.ReturnType->Constraints);
+
         for (auto it = I.Params.begin(); it != I.Params.end(); )
         {
             MRDOCS_ASSERT(!it->Type.valueless_after_move());
             if (!it->Type->Constraints.empty())
             {
-                for (ExprInfo const& constraint: it->Type->Constraints)
-                {
-                    if (!I.Requires.Written.empty())
-                    {
-                        I.Requires.Written += " && ";
-                    }
-                    I.Requires.Written += constraint.Written;
-                }
+                appendConstraints(it->Type->Constraints);
                 it = I.Params.erase(it);
             }
             else
@@ -3252,10 +3280,42 @@ checkFilters(
     clang::Decl const* D,
     clang::AccessSpecifier const access)
 {
-    if (mode_ == BaseClass &&
+    // An implicit specialization is documented by its primary template:
+    // nobody wrote it, so reaching it as a base class or as the type of a
+    // parameter (`AnalysisManager<Module>::Invalidator &`) makes it a
+    // dependency, whatever the symbol filters say. Regular traversal only
+    // ever meets written declarations, so the rule is for the other modes,
+    // with one exception: the parent walk from a written declaration inside
+    // the specialization, an explicit specialization of one of its members,
+    // gives it a place of its own in the output to hold that member.
+    // See tests/golden/fixtures/templates/implicit-specialization-dependency.cpp
+    if (mode_ != Regular &&
+        !parentOfWritten_ &&
         isAnyImplicitSpecialization(D))
     {
         return ExtractionMode::Dependency;
+    }
+
+    // A member belongs to the documented surface only if its enclosing
+    // record does. Its own access can be public while the record is a
+    // private nested class, or the member can be defined out of line at
+    // namespace scope where nothing about the record is in sight; either
+    // way it will never reach the output, so it is not held to the
+    // documentation checks either. The record was usually traversed
+    // already; when it was not (an out-of-line member definition), its
+    // filters are evaluated here.
+    // See tests/golden/fixtures/config/warn-if-undocumented/private-nested-members.cpp
+    if (clang::Decl const* P = getParent(D);
+        P && isa<clang::CXXRecordDecl>(P))
+    {
+        ExtractionMode const parentMode = find(P)
+            ? find(P)->Extraction
+            : checkFilters(P, getAccess(P));
+        if (parentMode == ExtractionMode::Dependency ||
+            parentMode == ExtractionMode::ImplementationDefined)
+        {
+            return parentMode;
+        }
     }
 
     // The translation unit is always extracted as the
