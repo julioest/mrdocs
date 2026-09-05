@@ -332,16 +332,46 @@ html {
   margin-top: 1.5rem;
 }
 
-.doc table.tableblock tr:first-child {
-  background-color: rgba(0, 0, 0, 0.1);
+/* Antora emits <thead> only for options="header" -- 147 of 2,424 tables here.
+   The generated reference tables put their "Name | Description" header in
+   ordinary cells, so the first row carries the header fill and a real thead
+   below resets it. Measured before relying on it: of 2,277 headerless tables,
+   2,276 have a header-like first row. */
+.doc table.tableblock tr:first-child,
+.doc table.tableblock > thead > tr {
+  background-color: var(--table-header-background);
+}
+
+.doc table.tableblock tr:first-child > *,
+.doc table.tableblock > thead > tr > * {
+  color: var(--table-header-color);
+}
+
+.doc table.tableblock tr:first-child code,
+.doc table.tableblock > thead > tr code {
+  color: inherit;
+  background: none;
 }
 
 .doc table.tableblock thead ~ tbody tr:first-child {
   background-color: transparent;
 }
 
+.doc table.tableblock thead ~ tbody tr:first-child > * {
+  color: var(--doc-font-color);
+}
+
 .doc table.tableblock {
-  font-size: calc(15 / var(--rem-base) * 1rem);
+  font-size: calc(14 / var(--rem-base) * 1rem);
+}
+
+/* Figma: names are Menlo 14 in the label pink -- .doc code's 0.95em would
+   render them at 13.3. */
+.doc table.tableblock td code {
+  color: var(--table-name-color);
+  background: none;
+  font-size: 1em;
+  padding: 0;
 }
 
 .doc p.tableblock + p.tableblock {
@@ -360,15 +390,20 @@ html {
   margin-top: 0;
 }
 
+/* Figma rows are 38 tall. The doc body's 1.65 leading is too loose to hit that
+   in a cell, so tables set their own. */
 .doc table.tableblock th,
 .doc table.tableblock td {
-  padding: 0.5rem;
+  line-height: 1.5;
+  padding: calc(7 / var(--rem-base) * 1rem) calc(12 / var(--rem-base) * 1rem);
   transition: background-color 0.2s ease-in-out;
 }
 
+/* This was a raw rgba(255, 255, 255, 0.4) -- white at 40% on a cream page, so
+   every rule was invisible in light mode while --table-border-color sat unused. */
 .doc table.tableblock,
 .doc table.tableblock > * > tr > * {
-  border: 0 solid rgba(255, 255, 255, 0.4);
+  border: 0 solid var(--table-border-color);
 }
 
 .doc table.grid-all > * > tr > * {
@@ -388,8 +423,10 @@ html {
   border-bottom-width: 2.5px;
 }
 
+/* The framed variant is Figma's `table`: the same grid boxed in 2px outline. */
 .doc table.frame-all {
-  border-width: 1px;
+  border-width: 2px;
+  border-color: var(--table-frame-color);
 }
 
 .doc table.frame-ends {

@@ -254,7 +254,14 @@
   --quote-font-color: var(--text-muted);
   --quote-attribution-font-color: var(--text-muted);
   --sidebar-background: var(--surface-2);
-  --table-border-color: var(--border);
+  /* Figma 316:334286 table-basic: 1px #272E3E rules, a header row on the same
+     ink with paper text, the framed variant boxed in 2px outline, and names in
+     the first column set in Menlo in the label pink. */
+  --table-border-color: var(--ds-code-800);
+  --table-frame-color: var(--outline);
+  --table-header-background: var(--ds-code-800);
+  --table-header-color: var(--ds-paper-50);
+  --table-name-color: var(--ds-color-label);
   --table-stripe-background: var(--surface-2);
   --table-footer-background:
     linear-gradient(
