@@ -2455,9 +2455,12 @@ a[aria-busy=true], button[aria-busy=true], input[type=button][aria-busy=true], i
     --article-code-background-color: var(--code-background-color)
 }
 
-html {
-    scroll-behavior: smooth
-}
+/* Pico ships `html { scroll-behavior: smooth }` here. Removed: the page has
+   one working in-page anchor (#features) and two `href="#"` placeholders, and
+   the rule made the browser ANIMATE scroll restoration on every reload --
+   drawn out by MathJax and the lazy CTA mascot reflowing after first paint.
+   It also carried no prefers-reduced-motion guard, so it overrode that
+   preference for everyone. */
 
 .switcher {
     position: fixed;
