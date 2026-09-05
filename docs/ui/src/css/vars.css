@@ -74,18 +74,25 @@
   /* Code block surface + syntax highlighting. Theme-aware: a light GitHub-
      style surface in light mode, Midnight in dark mode, with the same hues in
      both so the doc-comment feature reads the same way either way. */
-  --hl-bg: #f6f8fa;
-  --hl-fg: #1f2328;
-  --hl-comment: #6e7781;
-  --hl-keyword: #cf222e;
-  --hl-string: #0a3069;
-  --hl-const: #0550ae;
-  --hl-entity: #953800;
-  --hl-title: #8250df;
-  --hl-tag: #116329;
-  --hl-doc: #43711f;
-  --hl-doc-strong: #4d7c0f;
-  --hl-border: #d0d7de;
+  /* The code panel is dark in BOTH themes, per frame 316:334286 and the landing
+     page, so these are deliberately theme-invariant -- there is no light set to
+     flip to. Ground, plain text and comments come from the shared system so the
+     two surfaces match; the remaining syntax roles keep the GitHub-dark values,
+     which the frame does not specify. */
+  --hl-bg: var(--ds-color-code-body);
+  --hl-fg: var(--ds-code-panel-fg);
+  --hl-comment: var(--ds-code-panel-comment);
+  --hl-keyword: #f47067;
+  --hl-string: #96d0ff;
+  --hl-const: #6cb6ff;
+  --hl-entity: #f69d50;
+  --hl-title: #dcbdfb;
+  --hl-tag: #8ddb8c;
+  --hl-doc: rgb(94, 135, 79);
+  --hl-doc-strong: rgb(164, 181, 67);
+  --hl-border: var(--ds-color-outline);
+  /* Figma: a 30px header strip in the chrome ink above the body. */
+  --pre-title-background: var(--ds-color-code-chrome);
   --code-panel-bg: var(--hl-bg);
   --code-panel-fg: var(--hl-fg);
   --code-panel-border: var(--hl-border);
@@ -342,18 +349,6 @@
   --color-black: rgba(0, 0, 0, 0.32);
   --color-blue-10: var(--mr-blue-300);
   --color-blue-100: var(--mr-blue);
-  --hl-bg: var(--mr-code-bg);
-  --hl-fg: #adbac7;
-  --hl-comment: #768390;
-  --hl-keyword: #f47067;
-  --hl-string: #96d0ff;
-  --hl-const: #6cb6ff;
-  --hl-entity: #f69d50;
-  --hl-title: #dcbdfb;
-  --hl-tag: #8ddb8c;
-  --hl-doc: rgb(94, 135, 79);
-  --hl-doc-strong: rgb(164, 181, 67);
-  --hl-border: rgba(148, 163, 184, 0.22);
   --logo-fill: #fff;
   --doc-icon-filter: none;
   --nav-panel-background: transparent;
@@ -399,18 +394,6 @@
     --color-black: rgba(0, 0, 0, 0.32);
     --color-blue-10: var(--mr-blue-300);
     --color-blue-100: var(--mr-blue);
-    --hl-bg: var(--mr-code-bg);
-    --hl-fg: #adbac7;
-    --hl-comment: #768390;
-    --hl-keyword: #f47067;
-    --hl-string: #96d0ff;
-    --hl-const: #6cb6ff;
-    --hl-entity: #f69d50;
-    --hl-title: #dcbdfb;
-    --hl-tag: #8ddb8c;
-    --hl-doc: rgb(94, 135, 79);
-    --hl-doc-strong: rgb(164, 181, 67);
-    --hl-border: rgba(148, 163, 184, 0.22);
     --logo-fill: #fff;
     --doc-icon-filter: none;
     --nav-panel-background: transparent;

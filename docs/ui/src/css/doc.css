@@ -895,33 +895,32 @@ html {
   border-radius: 6px;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
   display: block;
-  font-size: calc(15.5 / var(--rem-base) * 1rem);
+
+  /* Figma 316:334286 code-block-basic: Menlo 14 on #272E3E, 20px inset. */
+  font-size: calc(14 / var(--rem-base) * 1rem);
   line-height: 1.55;
   overflow-x: auto;
-  padding: 1rem 1.25rem;
+  padding: calc(20 / var(--rem-base) * 1rem);
 }
 
-/*
- * When a listing block carries a `.Title` line, render the title as a
- * header strip inside the same card as the source code rather than as
- * a separate caption floating above. The strip shares the code's dark
- * canvas with a slightly lighter text color, and the pre below loses
- * its top corners and top border so the two pieces read as one card
- * split by a single divider line. No second card around the existing
- * one: this is the same canvas with a header at the top.
- */
+/* A titled listing is Figma's `code-block`: a 30px header strip in the darker
+   chrome ink sitting on the same card as the body, which loses its top corners
+   so the two read as one. An untitled one is `code-block-basic`. */
 .doc .listingblock > .title {
-  background: var(--pre-background);
-  color: var(--hl-comment);
+  background: var(--pre-title-background);
+  color: var(--hl-fg);
   font-family: var(--body-font-family);
   font-size: calc(13 / var(--rem-base) * 1rem);
   font-style: normal;
   font-weight: 500;
   letter-spacing: 0.02em;
   border: 1px solid var(--pre-border-color);
-  border-bottom: 1px solid var(--pre-border-color);
+  border-bottom: 0;
   border-radius: 6px 6px 0 0;
-  padding: 0.55rem 1.25rem;
+  min-height: calc(30 / var(--rem-base) * 1rem);
+  display: flex;
+  align-items: center;
+  padding: 0 calc(20 / var(--rem-base) * 1rem);
   margin-bottom: 0;
 }
 
