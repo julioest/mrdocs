@@ -6048,11 +6048,17 @@ header {
 
 /* Pico colours links through its own --color property, which beats a
    plain `color` declaration -- the same trap the hero buttons hit. */
+/* Gold, not the panel blue. The .fig as exported 2026-08-20 fills both CTA
+   buttons from the blue ramp (#93C5FD / #1E78FF, which is what
+   --ds-blue-300 and --ds-blue-450 still record) but the desktop mockup
+   supplied 2026-09-04 supersedes it: gold here, ink on the secondary. The
+   blue fill also matched the panel EXACTLY, so the primary CTA was painting
+   as an empty outline. */
 .cta-btn--download,
 .cta-btn--download:visited,
 .cta-btn--download:hover,
 .cta-btn--download:focus {
-    background: var(--ds-blue-300);
+    background: var(--ds-gold-300);
     --color: var(--ds-black);
     color: var(--ds-black);
 }
@@ -6061,11 +6067,14 @@ header {
     min-width: 132px;
 }
 
+/* --ds-ink-950 rather than --ds-color-outline: they are the same #0F172A on
+   light, but the outline token goes pure black on dark, which would have
+   swallowed this button's own border. */
 .cta-btn--read,
 .cta-btn--read:visited,
 .cta-btn--read:hover,
 .cta-btn--read:focus {
-    background: var(--ds-blue-450);
+    background: var(--ds-ink-950);
     --color: var(--ds-paper-50);
     color: var(--ds-paper-50);
 }
