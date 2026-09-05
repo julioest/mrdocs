@@ -125,22 +125,18 @@
 
   /* ---- fonts ---- */
   --rem-base: 18;
-  --brand-display-font: "Bangers", "Special Elite", cursive;
+  --brand-display-font: var(--ds-font-display);
   --body-font-size: 1.0625em;
   --body-font-size--desktop: 1.125em;
   --body-font-size--print: 0.9375em;
   --body-line-height: 1.5;
   --body-font-color: var(--text);
   --body-font-family: var(--ds-font-body);
-  /* Sans face used ONLY for the documentation reading body (prose / doc
-     comments), where the typewriter face hurts legibility. Titles, navbar,
-     nav tree and TOC stay on the brand body face above. */
-  --doc-body-font:
-    "Roboto",
-    -apple-system,
-    blinkmacsystemfont,
-    "Segoe UI",
-    sans-serif;
+  /* Frame 316:334286 sets documentation body copy in Special Elite at
+     14 / 16 / 20 -- the same face as the rest of the site -- so the Roboto
+     exception this token used to carry is gone. Julio confirmed the design
+     on 2026-09-05; the legibility trade-off is deliberate. */
+  --doc-body-font: var(--ds-font-body);
   --body-font-weight-bold: var(--ds-weight-medium);
   --monospace-font-family: "Menlo", "Roboto Mono", ui-monospace, monospace;
   --monospace-font-weight-bold: var(--ds-weight-medium);
@@ -215,9 +211,14 @@
   --warning-on-color: var(--mr-white);
 
   /* doc */
-  --doc-font-color: var(--text);
+  /* Figma sets body copy in the strong ink (#0F172A), not the softer --text
+     the theme used before. */
+  --doc-font-color: var(--text-strong);
   --doc-font-size: inherit;
-  --doc-font-size--desktop: calc(17 / var(--rem-base) * 1rem);
+  --doc-font-size--desktop: calc(16 / var(--rem-base) * 1rem);
+  /* text-size-small / -large from the same frame. */
+  --doc-font-size-small: calc(14 / var(--rem-base) * 1rem);
+  --doc-font-size-large: calc(20 / var(--rem-base) * 1rem);
   --doc-line-height: 1.65;
   --doc-margin: 0 auto;
   /* Figma 316:334286: the content column is flush against the nav seam --
@@ -227,7 +228,8 @@
   --heading-font-color: var(--heading-color);
   --heading-font-weight: normal;
   --alt-heading-font-weight: var(--body-font-weight-bold);
-  --section-divider-color: var(--border);
+  /* Figma rules its sections with a 2px outline, not a hairline border. */
+  --section-divider-color: var(--outline);
   --link-font-color: var(--link);
   --link_hover-font-color: var(--link-hover);
   --link_unresolved-font-color: var(--important-color);

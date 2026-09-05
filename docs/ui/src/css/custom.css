@@ -54,20 +54,11 @@
   font-family: var(--doc-body-font);
 }
 
-/* Doc-content headings use the brand heading colour (blue on light, yellow on
-   dark). The face itself is set in doc.css, which puts them on the display
-   face as part of the comic refresh; only the colour belongs here.
-   Note the case is NOT changed: reference headings are C++ symbol names, so
-   uppercasing them would mangle them. That part of the original reasoning
-   still holds and is deliberately preserved. */
-.doc h1,
-.doc h2,
-.doc h3,
-.doc h4,
-.doc h5,
-.doc h6 {
-  color: var(--heading-font-color);
-}
+/* The flat --heading-font-color that used to be set here is gone: doc.css now
+   gives each level an outlined fill from Figma 316:334286, and this rule
+   imports after it, so it would have painted straight over the fill. Case is
+   still NOT changed anywhere -- reference headings are C++ symbol names, so
+   uppercasing them would mangle them. */
 
 .toc.sidebar .toc-menu {
   color: var(--toc-font-color);

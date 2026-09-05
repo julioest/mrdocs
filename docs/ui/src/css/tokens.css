@@ -54,7 +54,17 @@
     "Segoe UI Symbol",
     "Noto Color Emoji";
   /* Display face: Bangers, vendored via @fontsource (see typeface-bangers.css). */
-  --ds-font-display: "Bangers", "Special Elite", cursive;
+  /* Matches the landing page's stack (docs/website/styles.css:109). The
+     old fallback here was "Special Elite", cursive -- a typewriter face and
+     then a script default, neither of which stands in for a heavy comic
+     display face when Bangers fails to load. */
+  --ds-font-display:
+    "Bangers",
+    impact,
+    haettenschweiler,
+    "Arial Narrow Bold",
+    "Franklin Gothic Bold",
+    sans-serif;
 
   /* --- Typography: weights ----------------------------------------- */
   --ds-weight-regular: 400;
