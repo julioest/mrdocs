@@ -106,6 +106,9 @@ jobs:
           cp robots.txt ../../build/website/robots.txt
           cp styles.css ../../build/website/styles.css
           cp -r assets ../../build/website/assets
+          # -L: docs/website/shared is a symlink to docs/shared, which both the
+          # landing page and the Antora theme consume.
+          cp -rL shared ../../build/website/shared
 
       - name: Generate Antora UI
         working-directory: docs/ui

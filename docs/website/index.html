@@ -28,7 +28,12 @@
          crossorigin is required -- fonts are always fetched in CORS mode. -->
     <link rel="preload" href="assets/fonts/bangers-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="assets/fonts/special-elite-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="styles.css?v=1787703717446">
+    <!-- The design system is shared with the Antora theme, which imports the
+         same file. A separate <link> rather than an @import inside styles.css:
+         an import blocks on the parent sheet being parsed first, where two
+         links fetch in parallel. -->
+    <link rel="stylesheet" href="shared/design-system.css?v=1788642718375">
+    <link rel="stylesheet" href="styles.css?v=1788581573284">
     <!-- MathJax typesets the \(...\) and \[...\] delimiters that the embedded
          MrDocs panels emit for stem/latexmath math. -->
     <script>
@@ -434,7 +439,7 @@
 <div class="header">
 <h2 id="sqrt">sqrt</h2>
 <div class="brief">
-<p>Computes the integer square root</p></div><!-- /brief -->
+<p>Computes the integer square root \(\lfloor\sqrt{value}\rfloor\).</p></div><!-- /brief -->
 </div><!-- /header -->
 <div class="synopsis">
 <h3>Synopsis</h3>
@@ -446,10 +451,7 @@ T
 </div><!-- /synopsis -->
 <div class="description">
 <h3>Description</h3>
-<pre><code class="language-cpp">
-\lfloor\sqrt{value}\rfloor
-</code></pre><p>.</p>
-<p>This function calculates the square root of a given integral value using bit manipulation, in  time.</p>
+<p>This function calculates the square root of a given integral value using bit manipulation, in \(O(\log value)\) time.</p>
 </div><!-- /description -->
 <div class="exceptions">
 <h3>Exceptions</h3>

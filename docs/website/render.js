@@ -189,6 +189,12 @@ const cssPath = path.join(__dirname, 'styles.css');
 const cssVer = fs.existsSync(cssPath) ? Math.round(fs.statSync(cssPath).mtimeMs) : Date.now();
 templateSource = templateSource.replace('href="styles.css"', `href="styles.css?v=${cssVer}"`);
 
+// Same for the shared design system, which carries its own mtime.
+const dsPath = path.join(__dirname, 'shared', 'design-system.css');
+const dsVer = fs.existsSync(dsPath) ? Math.round(fs.statSync(dsPath).mtimeMs) : Date.now();
+templateSource = templateSource.replace(
+  'href="shared/design-system.css"', `href="shared/design-system.css?v=${dsVer}"`);
+
 // Compile the template AFTER replacement
 let template = Handlebars.compile(templateSource);
 
