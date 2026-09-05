@@ -117,7 +117,7 @@
   --ds-section-gap: 3rem; /* → 4rem on ≥576px         */
 
   /* --- Radii & borders --------------------------------------------- */
-  --ds-radius: 0.25rem;
+  --ds-radius: 0.5rem;
   --ds-radius-pill: 2rem;
   --ds-border-width: 1px;
   --ds-border-width-bold: 2px; /* comic outlines         */
@@ -532,6 +532,16 @@
   --ds-title-color: var(--ds-color-title);
   --ds-title-color-alt: var(--ds-color-title-alt);
   --ds-title-ink: var(--ds-color-outline);
-  --ds-title-outline-width: 4px;
+  /* Doubled: Figma strokes are strokeAlign OUTSIDE, -webkit-text-stroke
+     centres. Shadow is a filter, not text-shadow, which the stroke would hide. */
+  --ds-title-outline-width: 6px; /* Figma 3px OUTSIDE */
+  --ds-title-drop: drop-shadow(3px 3px 0 var(--ds-title-ink));
   --ds-title-shadow: 4px 4px 0 var(--ds-title-ink);
+}
+
+@media (min-width: 992px) {
+  :root {
+    --ds-title-outline-width: 8px; /* Figma 4px OUTSIDE */
+    --ds-title-drop: drop-shadow(4px 4px 0 var(--ds-title-ink));
+  }
 }
