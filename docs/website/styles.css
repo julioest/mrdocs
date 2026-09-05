@@ -446,6 +446,63 @@
   /* How far down the section the field stays visible before fading out. */
   --ds-halftone-extent: 55%;
 
+  /* ---- CTA panel decoration (its own artwork, not the field above) --- *
+   * Mobile values; the desktop frame regrades both layers at 992. Figma
+   * fills the dots and the burst wedges with BLACK at 10% in both themes
+   * -- unlike --ds-color-halftone, which flips to white on dark -- so the
+   * colour is stated here rather than inherited. See the block at
+   * "CTA decoration" for where each of these lands. */
+  --ds-cta-halftone-dot: rgba(0, 0, 0, 0.1);
+  /* .fig mobile frame: 6.6px pitch, dot diameter an even ~1.6 across the
+     whole panel, so mobile needs no size grading at all. */
+  --ds-cta-halftone-gap: 6.6px;
+  --ds-cta-dot-small: 0.75px;
+  --ds-cta-dot-large: 1.3px;
+  /* Mobile grades ACROSS, not down: heavy at both side edges, thinnest down
+     the middle where the copy sits. Measured off the 402 background export --
+     dot diameter 2.4-2.6 at the edges against 0.7-0.9 mid-column, on the same
+     6.6px pitch throughout.
+     NOTE: at that pitch Chromium rasterises every radius below ~1.5px to the
+     same dot, so on mobile the two radii above do not actually differ -- the
+     grading is carried entirely by these two masks, which vary the field's
+     DENSITY instead. The radii are kept so the layer means the same thing it
+     does at 992, where they do resolve. */
+  --ds-cta-halftone-gutter: linear-gradient(
+      to right, #000 0, rgba(0, 0, 0, 0.5) 40%,
+      rgba(0, 0, 0, 0.5) 60%, #000 100%
+  );
+  --ds-cta-halftone-grade: linear-gradient(
+      to right, #000 0, transparent 20%, transparent 80%, #000 100%
+  );
+  /* ---- Burst: Figma's artwork, at both breakpoints ------------------ *
+   * The 84 rays (an even 4.286deg pitch -- both exports' angular spectra
+   * peak at exactly 84 cycles/360deg) are tapered triangles of individually
+   * varying length, weight and start radius, and they are not spread evenly
+   * around the circle: ink per 10deg sector runs from 0 to 1054 in the
+   * desktop export, near-empty up-and-left and heaviest below. A
+   * repeating-conic-gradient carries none of that -- it paints every angle
+   * identically at every radius -- so both breakpoints mask the export
+   * itself rather than approximating it.
+   *
+   * Each file is a lossless WebP with its RGB flattened to black before
+   * encoding: the ink is black to within 3/255 alpha-weighted, so what
+   * ships is the alpha channel and nothing else, and every ray's weight
+   * lives in it. Masking rather than painting the image keeps the ink a
+   * token, so the whole burst scales from one declaration.
+   *
+   *   mobile   assets/mrdocs-cta-rays-mobile.webp    804x1734, 9.7KB
+   *   desktop  assets/mrdocs-cta-rays-desktop.webp  2000x1182,  49KB
+   *
+   * Both are exact 1:1 exports of their Figma frame -- mobile is 402x867 at
+   * 2x, desktop 1440x851 -- so PAINTING ONE AT ITS FRAME WIDTH, top left of
+   * the container, is the entire placement. That alone lands each burst's
+   * origin on the mascot's chest (desktop: the artwork's own centre falls at
+   * (1066, 294) against the .fig's (1068.5, 292.5)); the mascot is laid out
+   * against the same container with a fixed offset at both breakpoints, so
+   * the two track each other without an origin coordinate on either side. */
+  --ds-cta-burst-art: url("./assets/mrdocs-cta-rays-mobile.webp");
+  --ds-cta-burst-art-width: 402px;
+  --ds-cta-burst-art-color: var(--ds-black);
   /* ---- Code panel (hero + example rows) --------------------------- *
    * Dark in BOTH themes per the mockups, so these are deliberately
    * theme-invariant: the themed --hl-* vars would go invisible here in
@@ -4483,7 +4540,10 @@ header::before,
 @media (prefers-contrast: more) {
     header::before,
     #features::before,
-    .principles::before {
+    .principles::before,
+    .cta-panel::before,
+    .cta-panel::after,
+    .cta-panel-inner::before {
         display: none;
     }
 }
@@ -5914,6 +5974,109 @@ header {
     isolation: isolate;
 }
 
+/* ---- CTA decoration: halftone burst --------------------------------- *
+ * NOT the shared page halftone. Figma draws two artwork layers inside the
+ * panel, measured out of the .fig (frame "Frame 134" 1440x846, node
+ * 316:316779) rather than off the mockup, because both are bespoke:
+ *
+ *   Layer_1  15053 vector dots, black at 10%, on a 9.2px grid, with the
+ *            dot DIAMETER graded 0.06 -> 9.36px. Mean diameter by region:
+ *
+ *                     x0-240  240-480  480-720  720-960  960-1200 1200-1440
+ *            y   0-192  1.83    1.84     2.90     2.94     2.54     1.65
+ *            y 192-384  0.56    1.54     1.65     1.07     1.38     1.32
+ *            y 384-576  0.86    1.97     3.63     2.62     3.90     3.31
+ *            y 576-768  1.23    5.84     5.50     5.78     6.98     5.72
+ *
+ *            i.e. near-empty behind the copy column, heaviest along the
+ *            bottom. Two layers approximate the size grading: ::before is
+ *            the small dot everywhere, ::after the large dot faded in over
+ *            the bottom. Same pitch and phase on both, so the big dots land
+ *            on the small ones and read as growth rather than a second grid.
+ *
+ *   Union    84 wedges on an even 4.286deg pitch (360/84) radiating from
+ *            panel (1068.5, 292.5) -- the mascot's chest -- black at 10%,
+ *            under a radial gradient that clears well inside the panel.
+ *            Even pitch is where the resemblance ends: the rays taper, run
+ *            to different lengths, start at different radii and cluster
+ *            hard by direction. This layer is therefore not drawn at all
+ *            but masked from Figma's own export, one per breakpoint --
+ *            see --ds-cta-burst-art.
+ *
+ * The dot masks were then swept against the mockup and scored on mean ink
+ * per 160x128 cell: 3.41 before, 1.53 after, over a range of 0.8-14.7. What
+ * is left is the one thing CSS still cannot do here -- grading dot SIZE
+ * continuously across the field.
+ *
+ * The burst is anchored to the mascot, which is placed off the CENTRED
+ * container, so its origin has to track that rather than the full-bleed
+ * panel -- hence the max() below. The dots are panel-wide and do not.
+ * ===================================================================== */
+.cta-panel::before,
+.cta-panel::after,
+.cta-panel-inner::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    /* Above the panel's own blue fill (the panel isolates), below the copy
+       and the mascot. The panel's overflow:hidden keeps all three inside
+       the 2px outline. */
+    z-index: -1;
+    pointer-events: none;
+    /* Pico resets background-repeat on every ::before (styles.css:822). */
+    background-repeat: repeat;
+}
+
+/* Base grid: the small dot, present everywhere except the copy gutter. */
+.cta-panel::before {
+    background-image: radial-gradient(
+        var(--ds-cta-halftone-dot) var(--ds-cta-dot-small),
+        transparent var(--ds-cta-dot-small)
+    );
+    background-size: var(--ds-cta-halftone-gap) var(--ds-cta-halftone-gap);
+    -webkit-mask-image: var(--ds-cta-halftone-gutter);
+    mask-image: var(--ds-cta-halftone-gutter);
+}
+
+/* The large dot, faded in over the bottom of the panel. Where it is opaque
+   it covers the small dot exactly; where it is clear only the small dot
+   shows; in between the pair reads as an intermediate size. */
+.cta-panel::after {
+    background-image: radial-gradient(
+        var(--ds-cta-halftone-dot) var(--ds-cta-dot-large),
+        transparent var(--ds-cta-dot-large)
+    );
+    background-size: var(--ds-cta-halftone-gap) var(--ds-cta-halftone-gap);
+    -webkit-mask-image: var(--ds-cta-halftone-grade), var(--ds-cta-halftone-gutter);
+    mask-image: var(--ds-cta-halftone-grade), var(--ds-cta-halftone-gutter);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+}
+
+/* Speed lines. On .cta-panel-inner so the burst is measured from the same
+   container the mascot is positioned against -- centred and capped at 1440
+   on desktop, full width on mobile -- and later in tree order than the two
+   dot layers, so at the same z-index it paints over them.
+
+   The pseudo-element is inset:0 on that container, so anchoring the mask
+   top-left is all the placement there is; --ds-cta-burst-art-width picks the
+   frame the export was drawn at and @media 992 swaps both tokens. Each
+   artwork is taller than the panel it sits in (mobile 867 against ~870 of
+   content, desktop 851 against 768) and the desktop one is wider than the
+   container past 1440, so the bottom and right run under the panel's
+   overflow:hidden. The .fig clips them at the same frame. */
+.cta-panel-inner::before {
+    background-color: var(--ds-cta-burst-art-color);
+    -webkit-mask-image: var(--ds-cta-burst-art);
+    mask-image: var(--ds-cta-burst-art);
+    -webkit-mask-size: var(--ds-cta-burst-art-width) auto;
+    mask-size: var(--ds-cta-burst-art-width) auto;
+    -webkit-mask-position: left top;
+    mask-position: left top;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+}
+
 .cta-panel-inner {
     position: relative;
     /* Figma mobile frame: 867 tall. */
@@ -6167,6 +6330,31 @@ footer {
    gutter, so the CTA has to change arrangement at the same width or the
    mascot's offset would be measured against the wrong padding. */
 @media (min-width: 992px) {
+    /* The desktop frame regrades the dot field -- see the table in the CTA
+       decoration block for the diameters these approximate. The burst is not
+       regraded but replaced; its rule follows. */
+    .cta-panel {
+        --ds-cta-halftone-gap: 9.2px;
+        --ds-cta-dot-small: 0.7px;
+        --ds-cta-dot-large: 2.8px;
+        /* Copy column: Figma drops the mean diameter to 0.56-0.86 behind it
+           against 3.4 out in the open. */
+        --ds-cta-halftone-gutter: linear-gradient(
+            to right, transparent 0, #000 400px
+        );
+        /* Down the panel Figma runs 2.63 at the top edge, 1.19 through the
+           middle, then 5.25 along the bottom -- so the large dot fades in
+           twice, weakly at the very top and fully below the copy. */
+        --ds-cta-halftone-grade: linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.1) 0, transparent 25%,
+            transparent 45%, #000 80%
+        );
+        /* Same layer, the desktop frame's export -- see the burst block. */
+        --ds-cta-burst-art: url("./assets/mrdocs-cta-rays-desktop.webp");
+        --ds-cta-burst-art-width: 1440px;
+    }
+
     .cta-panel-inner {
         /* Figma desktop frame: 768 tall. */
         min-height: 768px;
