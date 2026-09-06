@@ -189,11 +189,17 @@ const cssPath = path.join(__dirname, 'styles.css');
 const cssVer = fs.existsSync(cssPath) ? Math.round(fs.statSync(cssPath).mtimeMs) : Date.now();
 templateSource = templateSource.replace('href="styles.css"', `href="styles.css?v=${cssVer}"`);
 
-// Same for the shared design system, which carries its own mtime.
-const dsPath = path.join(__dirname, 'shared', 'design-system.css');
-const dsVer = fs.existsSync(dsPath) ? Math.round(fs.statSync(dsPath).mtimeMs) : Date.now();
+// The design system is shared with the Antora theme and lives outside this
+// directory, but CI only publishes index.html, robots.txt, styles.css and
+// assets/. Copying it into assets/ means the existing `cp -r assets` step
+// carries it -- no workflow change, which matters because any edit under
+// .github/workflows/ci-* forces the full CI matrix (utils/danger/logic.ts).
+const dsSrc = path.join(__dirname, '..', 'shared', 'design-system.css');
+const dsOut = path.join(__dirname, 'assets', 'design-system.css');
+fs.copyFileSync(dsSrc, dsOut);
+const dsVer = Math.round(fs.statSync(dsSrc).mtimeMs);
 templateSource = templateSource.replace(
-  'href="shared/design-system.css"', `href="shared/design-system.css?v=${dsVer}"`);
+  'href="assets/design-system.css"', `href="assets/design-system.css?v=${dsVer}"`);
 
 // Compile the template AFTER replacement
 let template = Handlebars.compile(templateSource);

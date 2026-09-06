@@ -28,12 +28,13 @@
          crossorigin is required -- fonts are always fetched in CORS mode. -->
     <link rel="preload" href="assets/fonts/bangers-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="assets/fonts/special-elite-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-    <!-- The design system is shared with the Antora theme, which imports the
-         same file. A separate <link> rather than an @import inside styles.css:
-         an import blocks on the parent sheet being parsed first, where two
-         links fetch in parallel. -->
-    <link rel="stylesheet" href="shared/design-system.css?v=1788642718375">
-    <link rel="stylesheet" href="styles.css?v=1788581573284">
+    <!-- Shared with the Antora theme, which imports the same source file.
+         render.js copies it here from ../shared so the existing assets/ copy
+         step publishes it. A separate <link> rather than an @import inside
+         styles.css: an import blocks on the parent sheet parsing first, where
+         two links fetch in parallel. -->
+    <link rel="stylesheet" href="assets/design-system.css?v=1788642718375">
+    <link rel="stylesheet" href="styles.css?v=1788645583465">
     <!-- MathJax typesets the \(...\) and \[...\] delimiters that the embedded
          MrDocs panels emit for stem/latexmath math. -->
     <script>
