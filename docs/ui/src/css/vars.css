@@ -152,7 +152,8 @@
   --scrollbar_hover-thumb-color: var(--mr-yellow);
 
   /* navbar */
-  --navbar-background: var(--surface);
+  /* The header bar sits on the page beige, not white. */
+  --navbar-background: var(--bg);
   --navbar-border-color: var(--outline);
   --navbar-font-color: var(--text);
   --navbar_hover-background: var(--surface-2);
@@ -181,8 +182,10 @@
 
   /* toolbar */
   --toolbar-background: var(--surface);
-  /* Full-width cream strip, separated by its outline, not a fill. */
-  --toolbar-strip-bg: var(--bg);
+  /* Figma: rgba(30, 120, 255, 0.1) over #FDFAF5 -- i.e. --mr-blue-450 at 10%
+     over the page ground. Expressed as a mix rather than the composited hex so
+     it re-resolves per theme; the header bar above stays the plain ground. */
+  --toolbar-strip-bg: color-mix(in sRGB, var(--mr-blue-450) 10%, var(--bg));
   --toolbar-border-color: var(--outline);
   --toolbar-font-color: var(--text-muted);
   --toolbar-muted-color: var(--text-muted);
@@ -371,7 +374,6 @@
   --nav-panel-background: transparent;
   --nav-panel-overlay: rgba(255, 255, 255, 0.1);
   --nav-explore-overlay: rgba(255, 255, 255, 0.3);
-  --toolbar-strip-bg: rgba(255, 255, 255, 0.1);
   --tab-surface: rgba(255, 255, 255, 0.12);
   --tab-inactive-bg: rgba(0, 0, 0, 0.25);
   --tab-inactive-color: rgba(255, 255, 255, 0.5);
@@ -416,7 +418,6 @@
     --nav-panel-background: transparent;
     --nav-panel-overlay: rgba(255, 255, 255, 0.1);
     --nav-explore-overlay: rgba(255, 255, 255, 0.3);
-    --toolbar-strip-bg: rgba(255, 255, 255, 0.1);
     --tab-surface: rgba(255, 255, 255, 0.12);
     --tab-inactive-bg: rgba(0, 0, 0, 0.25);
     --tab-inactive-color: rgba(255, 255, 255, 0.5);

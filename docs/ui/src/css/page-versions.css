@@ -8,14 +8,18 @@
    version names vary. */
 .page-versions .version-menu-toggle {
   color: var(--text-strong);
+  font-family: var(--ds-font-display);
+  letter-spacing: 0.6px;
   background: var(--mr-blue-300);
   border: 2px solid var(--outline);
+  box-shadow: var(--outline-shadow);
   outline: none;
-  font-size: calc(12 / var(--rem-base) * 1rem);
+  font-size: calc(12 / var(--rem-base) * 1rem); /* Figma: Bangers 12 */
   line-height: 1;
+  min-height: calc(22.4 / var(--rem-base) * 1rem);
   padding:
-    calc(4 / var(--rem-base) * 1rem) calc(20 / var(--rem-base) * 1rem)
-    calc(4 / var(--rem-base) * 1rem) calc(10 / var(--rem-base) * 1rem);
+    calc(3.4 / var(--rem-base) * 1rem) calc(20 / var(--rem-base) * 1rem)
+    calc(3.4 / var(--rem-base) * 1rem) calc(10 / var(--rem-base) * 1rem);
   position: relative;
   z-index: var(--z-index-page-version-menu);
 }
@@ -24,6 +28,16 @@
    the button also holds the version text, so filtering the button would
    recolour the text too. The white chevron.svg is inverted to dark on the
    light theme via the icon filter, leaving the text untouched. */
+/* No dropdown to open, so no chevron and no pointer affordance. */
+.page-versions .version-menu-toggle.is-static {
+  cursor: default;
+  padding-right: calc(10 / var(--rem-base) * 1rem);
+}
+
+.page-versions .version-menu-toggle.is-static::after {
+  content: none;
+}
+
 .page-versions .version-menu-toggle::after {
   content: "";
   position: absolute;
