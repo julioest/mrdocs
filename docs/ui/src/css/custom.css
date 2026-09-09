@@ -81,10 +81,6 @@
   color: var(--color-white-50);
 }
 
-.nav-text {
-  color: var(--color-white-50);
-}
-
 /* Brand display face for the site title in the navbar. */
 .navbar-brand .logo-text {
   font-family: var(--brand-display-font);

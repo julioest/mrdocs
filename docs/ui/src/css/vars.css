@@ -53,6 +53,11 @@
   --text: #24303f;
   --text-strong: #0f172a;
   --text-muted: #5b6675;
+  /* Figma tints both the subnav strip and the nav panel with
+     linear-gradient(rgba(30, 120, 255, 0.1) ...), #FDFAF5 -- the brand blue at
+     10% over the page ground. A mix rather than the composited hex, so it
+     re-resolves per theme and needs no dark override. */
+  --surface-tint: color-mix(in sRGB, var(--mr-blue-450) 10%, var(--bg));
   --border: #e6e2d8;
   --border-strong: #cdd5df;
   /* Chrome edges are a hard 1px #0F172A rule (316:334286); --border stays the
@@ -171,12 +176,21 @@
   --nav-border-color: var(--outline);
   --nav-line-height: 1.35;
   --nav-heading-font-color: var(--text-muted);
-  --nav-muted-color: var(--text-muted);
+  --nav-muted-color: var(--ds-color-card-text); /* Figma #6E727B */
+  /* Collapse toggle. The caret ships as an SVG with #c1c1c1 baked into its
+     fill and stroke, so it is masked rather than drawn as an image and takes
+     these instead -- the frame draws no carets, so the ink follows the row it
+     sits next to. */
+  --nav-toggle-color: var(--nav-muted-color);
+  --nav-toggle_hover-color: var(--text-strong);
+  --nav-toggle_hover-background: color-mix(in sRGB, var(--text-strong) 10%, transparent);
+  --nav-toggle-focus-ring: var(--link);
   --nav-panel-divider-color: var(--border);
   --nav-secondary-background: var(--surface-2);
-  /* Sidebar sits on the page cream, separated by the outline alone. Dark keeps
-     a transparent base for the white overlays below. */
+  /* The tree sits in a tinted, outlined panel; the column behind it is the
+     page ground. */
   --nav-panel-background: var(--bg);
+  --nav-tree-background: var(--surface-tint);
   --nav-panel-overlay: transparent;
 
   /* toolbar */
@@ -184,7 +198,7 @@
   /* Figma: rgba(30, 120, 255, 0.1) over #FDFAF5 -- i.e. --mr-blue-450 at 10%
      over the page ground. Expressed as a mix rather than the composited hex so
      it re-resolves per theme; the header bar above stays the plain ground. */
-  --toolbar-strip-bg: color-mix(in sRGB, var(--mr-blue-450) 10%, var(--bg));
+  --toolbar-strip-bg: var(--surface-tint);
   --toolbar-border-color: var(--outline);
   --toolbar-font-color: var(--text-muted);
   --toolbar-muted-color: var(--text-muted);
