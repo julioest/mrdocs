@@ -22,6 +22,46 @@
  */
 
 /* =====================================================================
+ * METRIC-COMPATIBLE FALLBACK FACES
+ * =====================================================================
+ * The brand faces are much narrower than the system faces that stand in for
+ * them while they download, so a plain swap re-wraps every line: measured on
+ * the landing hero, Impact is 22.3% wider and 15.1% taller than Bangers,
+ * which turns a three-line headline into four and pushes the copy below it
+ * down by 173px. Courier New is 13.5% wider and 13.0% taller than Special
+ * Elite, worth ~70px over a doc page.
+ *
+ * These faces re-declare the same local fonts with their metrics scaled onto
+ * the brand faces', so the stand-in occupies exactly the same box. Measured
+ * residual error after the overrides is 0.01% on advance width -- line breaks
+ * are identical -- which turns the swap from a reflow into a repaint.
+ *
+ * The descriptors were derived by measurement, not by hand: see the ratios
+ * above. size-adjust scales the overrides too, hence ascent-override > 100%.
+ *
+ * src is local() only: no network cost, and where the local font is missing
+ * (most Linux) the face simply fails and the stack falls through to the plain
+ * families listed after it, which is exactly today's behaviour.
+ * ===================================================================== */
+@font-face {
+  font-family: "Bangers Fallback";
+  src: local("Impact");
+  size-adjust: 81.8%;
+  ascent-override: 107.6%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Special Elite Fallback";
+  src: local("Courier New"), local("CourierNewPSMT"), local("Courier");
+  size-adjust: 88.1%;
+  ascent-override: 79.5%;
+  descent-override: 34.1%;
+  line-gap-override: 0%;
+}
+
+/* =====================================================================
  * LAYER 0 — PRIMITIVES  (theme-agnostic)
  * ===================================================================== */
 :root {
@@ -68,7 +108,8 @@
   --ds-navy-400: #374956; /* dark form border         */
 
   /* --- Typography: families ---------------------------------------- */
-  --ds-font-body: "Special Elite", "Roboto", sans-serif;
+  --ds-font-body: "Special Elite", "Special Elite Fallback", "Roboto",
+    sans-serif;
   --ds-font-mono:
     "Menlo", "Consolas", "Roboto Mono", "Ubuntu Monospace", "Noto Mono",
     "Oxygen Mono", "Liberation Mono", monospace, "Apple Color Emoji",
@@ -77,8 +118,8 @@
      rather than the body stack: falling a comic headline through a
      typewriter face looks broken, and it is what showed during the load
      flash before the fonts were preloaded. */
-  --ds-font-display: "Bangers", Impact, Haettenschweiler, "Arial Narrow Bold",
-    "Franklin Gothic Bold", sans-serif;
+  --ds-font-display: "Bangers", "Bangers Fallback", Impact, Haettenschweiler,
+    "Arial Narrow Bold", "Franklin Gothic Bold", sans-serif;
 
   /* --- Typography: weights ----------------------------------------- */
   --ds-weight-regular: 400;

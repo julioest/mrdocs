@@ -1,12 +1,26 @@
 @charset "UTF-8";
 
-/* Mr.Docs brand faces: Bangers (display, uppercase) + Special Elite (body). */
+/* Mr.Docs brand faces: Bangers (display, uppercase) + Special Elite (body).
+ *
+ * Both are preloaded from index.html.hbs, so the fetch starts at HTML-parse
+ * time rather than after this sheet is parsed; measured cold they finish at
+ * 772ms against a 1172ms first paint, i.e. before anything is drawn.
+ *
+ * Bangers is optional rather than block. Both avoid the swap, but block buys
+ * that with an up-to-3s invisible headline if the preload loses the race,
+ * whereas optional falls back instantly and silently. The fallback is safe now
+ * that "Bangers Fallback" (design-system.css) scales Impact's metrics onto
+ * Bangers': un-adjusted, Impact is 22.3% wider, which re-wrapped the hero from
+ * three lines to four and moved the copy below it down 173px.
+ *
+ * Special Elite stays on swap -- a page of body copy stuck in the stand-in for
+ * the visit is worse than a repaint, and "Special Elite Fallback" removes the
+ * reflow that made the swap noticeable. */
 @font-face {
     font-family: "Bangers";
     font-style: normal;
     font-weight: 400;
-    font-display: block; /* preloaded + local: no visible block period,
-                        and never a wrong-face flash on the headline */
+    font-display: optional;
     src: url("assets/fonts/bangers-latin-400-normal.woff2") format("woff2");
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
@@ -15,8 +29,7 @@
     font-family: "Bangers";
     font-style: normal;
     font-weight: 400;
-    font-display: block; /* preloaded + local: no visible block period,
-                        and never a wrong-face flash on the headline */
+    font-display: optional;
     src: url("assets/fonts/bangers-latin-ext-400-normal.woff2") format("woff2");
     unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
@@ -3389,7 +3402,7 @@ footer a:focus {
 }
 .nav ul.nav-menu > li { list-style: none; margin: 0; }
 .nav ul.nav-menu > li.nav-link > a {
-    font-family: "Special Elite", ui-monospace, monospace;
+    font-family: var(--ds-font-body);
     font-size: 14px;
     letter-spacing: 1.4px;
     text-transform: uppercase;
@@ -3409,7 +3422,7 @@ footer a:focus {
     box-shadow: 2px 2px 0 var(--navc-shadow);
     background: var(--navc-bg);
     color: var(--navc-ink);
-    font-family: "Special Elite", ui-monospace, monospace;
+    font-family: var(--ds-font-body);
     font-size: 14px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
