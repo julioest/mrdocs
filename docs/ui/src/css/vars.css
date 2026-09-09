@@ -178,7 +178,6 @@
      a transparent base for the white overlays below. */
   --nav-panel-background: var(--bg);
   --nav-panel-overlay: transparent;
-  --nav-explore-overlay: transparent;
 
   /* toolbar */
   --toolbar-background: var(--surface);
@@ -306,7 +305,6 @@
   --nav-height: var(--body-min-height);
   --nav-height--desktop: var(--body-min-height);
   --nav-panel-menu-height: calc(100% - var(--drawer-height));
-  --nav-panel-explore-height: calc(50% + var(--drawer-height));
   --nav-width: calc(270 / var(--rem-base) * 1rem);
   /* The crumb bar scrolls away with the page; the TOC pins under the fixed
      navbar alone. */
@@ -373,7 +371,6 @@
   --doc-icon-filter: none;
   --nav-panel-background: transparent;
   --nav-panel-overlay: rgba(255, 255, 255, 0.1);
-  --nav-explore-overlay: rgba(255, 255, 255, 0.3);
   --tab-surface: rgba(255, 255, 255, 0.12);
   --tab-inactive-bg: rgba(0, 0, 0, 0.25);
   --tab-inactive-color: rgba(255, 255, 255, 0.5);
@@ -417,7 +414,6 @@
     --doc-icon-filter: none;
     --nav-panel-background: transparent;
     --nav-panel-overlay: rgba(255, 255, 255, 0.1);
-    --nav-explore-overlay: rgba(255, 255, 255, 0.3);
     --tab-surface: rgba(255, 255, 255, 0.12);
     --tab-inactive-bg: rgba(0, 0, 0, 0.25);
     --tab-inactive-color: rgba(255, 255, 255, 0.5);

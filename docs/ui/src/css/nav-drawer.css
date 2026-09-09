@@ -128,9 +128,6 @@
   /* Single-component site: the explore panel only duplicates the version
      switcher the drawer footer now provides, so drop its bottom strip and let
      the page tree use the full remaining drawer height. */
-  .nav-panel-explore {
-    display: none;
-  }
 
   .nav-panel-menu {
     height: 100%;
