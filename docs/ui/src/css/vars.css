@@ -280,9 +280,10 @@
     );
 
   /* toc */
-  --toc-font-color: var(--text-muted);
+  --toc-font-color: var(--ds-color-card-text);
   --toc-heading-font-color: var(--text-strong);
-  /* Figma 316:334286 rules each contents entry with a gold left border. */
+  /* Figma 316:334286: gold left rule per entry; inactive entries are the muted
+     #6E727B, the current one the strong ink. */
   --toc-border-color: var(--mr-yellow-300);
   --toc-line-height: 1.2;
 

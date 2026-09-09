@@ -81,10 +81,6 @@
   color: var(--color-white-50);
 }
 
-.toc .toc-menu a.is-active {
-  color: var(--link-font-color);
-}
-
 .nav-text {
   color: var(--color-white-50);
 }
